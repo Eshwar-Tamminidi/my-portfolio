@@ -1,11 +1,13 @@
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 120px;
 }
 
 /* Light Theme (default) */
 body {
   background-color: white;
   color: black;
+  padding-top: 70px;
 }
 
 /* Dark Theme */
@@ -13,6 +15,12 @@ body.dark-theme {
   background-color: #121212;
   color: white;
 }
+/* Prevent body scroll when menu is open */
+body.menu-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
 
 /* You can also add styling for other elements */
 .navbar.dark-theme, .footer.dark-theme {
@@ -661,6 +669,11 @@ body.dark-theme #snow-canvas {
     background: rgba(72, 242, 157, 0.4);
     font-family: calibri;
     padding-right: 15px;padding-left: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 .navdiv{
 	display: flex;
@@ -700,7 +713,7 @@ body.dark-themee *{
 	text-decoration: none;
 }
 body.dark-theme .navbar{
-	background: rgba(72, 184, 242, 0.4);
+	background: rgba(72, 184, 242, 0.8);
     font-family: calibri;
     padding-right: 15px;
     padding-left: 15px;

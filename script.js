@@ -3,20 +3,48 @@ document.addEventListener("DOMContentLoaded", function () {
   const hamburger = document.getElementById("hamburger");
   const navLinks = document.getElementById("navLinks");
 
+  let startX = 0;
+
   if (hamburger && navLinks) {
+    hamburger.textContent = "☰"; // Initial icon
+
     // Toggle menu on hamburger click
     hamburger.addEventListener("click", function () {
-      navLinks.classList.toggle("active");
+      const isActive = navLinks.classList.toggle("active");
+      document.body.classList.toggle("menu-open", isActive);
+      hamburger.textContent = isActive ? "✖" : "☰";
     });
 
     // Close menu when any nav link is clicked
     document.querySelectorAll("#navLinks a").forEach(link => {
       link.addEventListener("click", () => {
         navLinks.classList.remove("active");
+        document.body.classList.remove("menu-open");
+        hamburger.textContent = "☰";
       });
+    });
+
+    // Touch start (record position)
+    navLinks.addEventListener("touchstart", function (e) {
+      startX = e.touches[0].clientX;
+    });
+
+    // Touch end (check swipe)
+    navLinks.addEventListener("touchend", function (e) {
+      let endX = e.changedTouches[0].clientX;
+      let diffX = startX - endX;
+
+      // If swiped left more than 50px → close menu
+      if (diffX > 50) {
+        navLinks.classList.remove("active");
+        document.body.classList.remove("menu-open");
+        hamburger.textContent = "☰";
+      }
     });
   }
 });
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
