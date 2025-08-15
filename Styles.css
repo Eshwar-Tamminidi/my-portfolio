@@ -675,11 +675,13 @@ body.dark-theme #snow-canvas {
     width: 100%;
     z-index: 1000;
 }
-.navdiv{
-	display: flex;
-    align-items: center;
-    justify-content: space-between;
+.navdiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px; /* ensure both sides have space */
 }
+
 .logo a{
 	font-size: 25px;
     font-weight: 600;
@@ -900,12 +902,15 @@ body.dark-theme .theme-toggle:hover {
 
 /* Hamburger icon style */
 .hamburger {
-  display: none;
-  font-size: 30px;
+  display: block;
+  font-size: 28px; /* bigger and visible */
   cursor: pointer;
-  color: #010101;
-  z-index: 1001; /* Ensure hamburger is on top */
+  position: relative;
+  right: 0;         /* align inside navbar */
+  margin-right: 15px; /* spacing from edge */
+  z-index: 1100;    /* above menu */
 }
+
 body.dark-theme .hamburger {
   color: #fff;
 }
