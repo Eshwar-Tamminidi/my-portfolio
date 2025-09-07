@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburger.addEventListener("click", function () {
       const isActive = navLinks.classList.toggle("active");
       document.body.classList.toggle("menu-open", isActive);
+      hamburger.setAttribute("aria-expanded", isActive ? "true" : "false");
       hamburger.textContent = isActive ? "✖" : "☰";
     });
 
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       link.addEventListener("click", () => {
         navLinks.classList.remove("active");
         document.body.classList.remove("menu-open");
+        hamburger.setAttribute("aria-expanded", "false");
         hamburger.textContent = "☰";
       });
     });
@@ -38,306 +40,247 @@ document.addEventListener("DOMContentLoaded", function () {
       if (diffX > 50) {
         navLinks.classList.remove("active");
         document.body.classList.remove("menu-open");
+        hamburger.setAttribute("aria-expanded", "false");
         hamburger.textContent = "☰";
       }
     });
   }
 });
 
-
-
-
+/* ===== Rolling logos ===== */
 document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".Slide");
-    const sliderContainer = document.querySelector(".Logo");
+  const slider = document.querySelector(".Slide");
+  const sliderContainer = document.querySelector(".Logo");
 
-    let scrollSpeed = 2; //higher value faster scrolling
-    let scrollAmount = 0;
+  if (!slider || !sliderContainer) return;
 
-    function duplicateImages() {
-        const originalImages = slider.children.length;
-        while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
-            for (let i = 0; i < originalImages; i++) {
-                let clone = slider.children[i].cloneNode(true);
-                slider.appendChild(clone);
-            }
-        }
+  let scrollSpeed = 2; //higher value faster scrolling
+  let scrollAmount = 0;
+
+  function duplicateImages() {
+    const originalImages = slider.children.length;
+    while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
+      for (let i = 0; i < originalImages; i++) {
+        let clone = slider.children[i].cloneNode(true);
+        slider.appendChild(clone);
+      }
     }
+  }
 
-    function slideImages() {
-        scrollAmount -= scrollSpeed;
-        if (Math.abs(scrollAmount) >= slider.scrollWidth / 2) {
-            scrollAmount = 0; // Reset position when halfway through
-        }
-        slider.style.transform = `translateX(${scrollAmount}px)`;
-        requestAnimationFrame(slideImages);
+  function slideImages() {
+    scrollAmount -= scrollSpeed;
+    if (Math.abs(scrollAmount) >= slider.scrollWidth / 2) {
+      scrollAmount = 0; // Reset position when halfway through
     }
+    slider.style.transform = `translateX(${scrollAmount}px)`;
+    requestAnimationFrame(slideImages);
+  }
 
-    duplicateImages();
-    slideImages();
+  duplicateImages();
+  slideImages();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".Slide2");
-    const sliderContainer = document.querySelector(".Left");
-    let scrollSpeed = 20;//Lower value faster sccrolling 
+  const slider = document.querySelector(".Slide2");
+  const sliderContainer = document.querySelector(".Left");
+  if (!slider || !sliderContainer) return;
 
-    function duplicateImages() {
-        const originalImages = Array.from(slider.children);
-
-        // Duplicate images until the total width covers at least 2x the container width
-        while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
-            originalImages.forEach(img => {
-                let clone = img.cloneNode(true);
-                slider.appendChild(clone);
-            });
-        }
+  function duplicateImages() {
+    const originalImages = Array.from(slider.children);
+    while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
+      originalImages.forEach(img => {
+        let clone = img.cloneNode(true);
+        slider.appendChild(clone);
+      });
     }
-
-    function startScrolling() {
-        slider.style.animation = `scrollRight 10s linear infinite`; // Reverse direction
-    }
-
-    duplicateImages(); // Ensure enough images for infinite scrolling
-    startScrolling();  // Apply smooth animation
+  }
+  function startScrolling() {
+    slider.style.animation = `scrollRight 10s linear infinite`;
+    slider.style.animationPlayState = "running"; // resume animation
+  }
+  duplicateImages();
+  startScrolling();
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".Certfi");
-    const sliderContainer = document.querySelector(".Certifications");
-
-    let scrollSpeed = 2; //higher value faster scrolling
-    let scrollAmount = 0;
-
-    function duplicateImages() {
-        const originalImages = slider.children.length;
-        while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
-            for (let i = 0; i < originalImages; i++) {
-                let clone = slider.children[i].cloneNode(true);
-                slider.appendChild(clone);
-            }
-        }
-    }
-
-    function slideImages() {
-        scrollAmount -= scrollSpeed;
-        if (Math.abs(scrollAmount) >= slider.scrollWidth / 2) {
-            scrollAmount = 0; // Reset position when halfway through
-        }
-        slider.style.transform = `translateX(${scrollAmount}px)`;
-        requestAnimationFrame(slideImages);
-    }
-
-    duplicateImages();
-    slideImages();
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".Slide3");
-    const sliderContainer = document.querySelector(".Left2");
-    let scrollSpeed = 20;//Lower value faster sccrolling 
-
-    function duplicateImages() {
-        const originalImages = Array.from(slider.children);
-
-        // Duplicate images until the total width covers at least 2x the container width
-        while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
-            originalImages.forEach(img => {
-                let clone = img.cloneNode(true);
-                slider.appendChild(clone);
-            });
-        }
-    }
-
-    function startScrolling() {
-        slider.style.animation = `scrollRight 10s linear infinite`; // Reverse direction
-    }
-
-    duplicateImages(); // Ensure enough images for infinite scrolling
-    startScrolling();  // Apply smooth animation
-});
-
+/* Resume animation for Slides on load */
 document.addEventListener("DOMContentLoaded", function() {
-    let animatedElements = document.querySelectorAll(".Slide, .Slide2, .Slide3");
-    animatedElements.forEach(el => {
-        el.style.animationPlayState = "running";
-    });
+  let animatedElements = document.querySelectorAll(".Slide, .Slide2, .Slide3");
+  animatedElements.forEach(el => {
+    el.style.animationPlayState = "running";
+  });
 });
 
-
-
-
-
-
+/* ===== Project expand/collapse ===== */
 document.addEventListener("DOMContentLoaded", function() {
-    let projects = document.querySelectorAll(".project-container");
-
-    projects.forEach(project => {
-        project.addEventListener("click", function() {
-            this.classList.toggle("active");
-        });
+  let projects = document.querySelectorAll(".project-container");
+  projects.forEach(project => {
+    project.addEventListener("click", function() {
+      this.classList.toggle("active");
     });
+  });
 });
 
-
-
-
+/* ===== Genie show on scroll ===== */
 document.addEventListener("DOMContentLoaded", function() {
-    let genieElements = document.querySelectorAll(".genie-box");
+  let genieElements = document.querySelectorAll(".genie-box");
+  function showOnScroll(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+  let observer = new IntersectionObserver(showOnScroll, { threshold: 0.3 });
+  genieElements.forEach(el => observer.observe(el));
+  setTimeout(() => { genieElements.forEach(el => el.classList.add("show")); }, 500);
+});
 
-    // Function to show the animation on scroll
-    function showOnScroll(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-                observer.unobserve(entry.target); // Remove observer after appearing
-            }
-        });
+/* ===== Communication reveal ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  let communicationSection = document.querySelector(".communication-envelope");
+  if (!communicationSection) return;
+
+  function revealOnScroll(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+  let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
+  observer.observe(communicationSection);
+});
+
+/* ===== Fade-in left elements ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  let elements = document.querySelectorAll(".fade-in-left");
+  function revealOnScroll(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+  let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
+  elements.forEach(element => observer.observe(element));
+});
+
+/* ===== Skills reveal ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  let skillsSection = document.querySelector(".skills-envelope");
+  if (!skillsSection) return;
+
+  function revealOnScroll(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+  let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
+  observer.observe(skillsSection);
+});
+
+/* ===== Education reveal after genie ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  const genieBox = document.querySelector('.genie-box');
+  const educationSection = document.querySelector('.education-container');
+  if (!genieBox || !educationSection) return;
+
+  function revealEducation() {
+    const rect = educationSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      educationSection.classList.add('show');
+      window.removeEventListener('scroll', revealEducation);
     }
+  }
 
-    // Observer to trigger animation on scroll
-    let observer = new IntersectionObserver(showOnScroll, {
-        threshold: 0.3 // Trigger when 30% visible
-    });
-
-    genieElements.forEach(el => observer.observe(el));
-
-    // Also trigger animation on page load
+  setTimeout(() => {
+    genieBox.classList.add('show');
     setTimeout(() => {
-        genieElements.forEach(el => el.classList.add("show"));
-    }, 500);
+      window.addEventListener('scroll', revealEducation);
+      revealEducation();
+    }, 0);
+  }, 1000);
 });
 
-
+/* ===== Certificates: manual drag / swipe (NO auto scroll) ===== */
 document.addEventListener("DOMContentLoaded", function () {
-    let communicationSection = document.querySelector(".communication-envelope");
+  const certWrap = document.querySelector(".Certifications");
+  if (!certWrap) return;
 
-    function revealOnScroll(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show"); // Trigger animation when visible
-                observer.unobserve(entry.target); // Stop observing after animation runs once
-            }
-        });
-    }
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
 
-    let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 }); // Start animation when 30% visible
-    observer.observe(communicationSection);
+  // Mouse
+  certWrap.addEventListener("mousedown", (e) => {
+    isDown = true;
+    certWrap.classList.add("dragging");
+    startX = e.pageX - certWrap.offsetLeft;
+    scrollLeft = certWrap.scrollLeft;
+  });
+  certWrap.addEventListener("mouseleave", () => { isDown = false; certWrap.classList.remove("dragging"); });
+  certWrap.addEventListener("mouseup", () => { isDown = false; certWrap.classList.remove("dragging"); });
+  certWrap.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - certWrap.offsetLeft;
+    const walk = (x - startX) * 1.8;
+    certWrap.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch
+  certWrap.addEventListener("touchstart", (e) => {
+    isDown = true;
+    startX = e.touches[0].pageX - certWrap.offsetLeft;
+    scrollLeft = certWrap.scrollLeft;
+  }, { passive: true });
+
+  certWrap.addEventListener("touchend", () => { isDown = false; }, { passive: true });
+
+  certWrap.addEventListener("touchmove", (e) => {
+    if (!isDown) return;
+    const x = e.touches[0].pageX - certWrap.offsetLeft;
+    const walk = (x - startX) * 1.6;
+    certWrap.scrollLeft = scrollLeft - walk;
+  }, { passive: true });
 });
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    let elements = document.querySelectorAll(".fade-in-left");
-
-    function revealOnScroll(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show"); // Add animation class
-                observer.unobserve(entry.target); // Run only once
-            }
-        });
-    }
-
-    let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
-
-    elements.forEach(element => observer.observe(element));
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    let communicationSection = document.querySelector(".skills-envelope");
-
-    function revealOnScroll(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show"); // Trigger animation when visible
-                observer.unobserve(entry.target); // Stop observing after animation runs once
-            }
-        });
-    }
-
-    let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 }); // Start animation when 30% visible
-    observer.observe(communicationSection);
-});
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const genieBox = document.querySelector('.genie-box');
-    const educationSection = document.querySelector('.education-container');
-
-    function revealEducation() {
-        const rect = educationSection.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-            educationSection.classList.add('show');
-            window.removeEventListener('scroll', revealEducation); // Ensure it runs only once
-        }
-    }
-
-    // Ensure genie effect completes before enabling scroll animation
-    setTimeout(() => {
-        genieBox.classList.add('show'); // Genie effect starts
-
-        // After genie effect completes, enable scroll detection for education section
-        setTimeout(() => {
-            window.addEventListener('scroll', revealEducation);
-            revealEducation(); // Check on page load in case it's already visible
-        }, 0); // Adjust timing based on genie effect duration
-    }, 1000); // Timing for genie effect start
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    let certSlider = document.querySelector(".Certfi");
-
-    function pauseAnimation() {
-        certSlider.style.animationPlayState = "paused";
-        setTimeout(() => {
-            certSlider.style.animationPlayState = "running";
-        }, 5000); // Resume after 5 seconds
-    }
-
-    // Pause for 5 seconds on hover or click
-    certSlider.addEventListener("mouseover", pauseAnimation);
-    certSlider.addEventListener("click", pauseAnimation);
-});
-
-
-
-
-
+/* ===== Theme Toggle ===== */
 document.addEventListener("DOMContentLoaded", function () {
   const toggleBtn = document.getElementById("theme-toggle");
   const body = document.body;
 
-  // Apply saved theme on page load
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark-theme");
-    toggleBtn.textContent = "☀️";
+    if (toggleBtn) toggleBtn.textContent = "☀️";
   } else {
-    toggleBtn.textContent = "🌙";
+    if (toggleBtn) toggleBtn.textContent = "🌙";
   }
 
-  toggleBtn.addEventListener("click", () => {
-    body.classList.toggle("dark-theme");
-    const isDark = body.classList.contains("dark-theme");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    toggleBtn.textContent = isDark ? "☀️" : "🌙";
-  });
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      body.classList.toggle("dark-theme");
+      const isDark = body.classList.contains("dark-theme");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      toggleBtn.textContent = isDark ? "☀️" : "🌙";
+    });
+  }
 });
 
-
-
+/* ===== Snow Effect (dark mode only) ===== */
 function initSnowEffect() {
   const canvas = document.getElementById("snow-canvas");
   if (!canvas || !document.body.classList.contains("dark-theme")) return;
 
   const ctx = canvas.getContext("2d");
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
   const snowflakes = [];
 
   function createSnowflakes() {
@@ -389,42 +332,39 @@ function initSnowEffect() {
   createSnowflakes();
   updateSnowfall();
 }
-
-// Run after page loads
 window.addEventListener("load", initSnowEffect);
 
-
-
-
-document.getElementById("contactForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const form = e.target;
-  const formData = new FormData(form);
+/* ===== Contact Form (safe attach) ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("contactForm");
   const formMessage = document.getElementById("formMessage");
+  if (!form) return;
 
-  try {
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    });
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const formData = new FormData(form);
 
-    if (response.ok) {
-      formMessage.textContent = "Thank you! Your message has been sent.";
-      formMessage.style.color = "green";
-      form.reset();
-    } else {
-      const data = await response.json();
-      formMessage.textContent = data.errors
-        ? data.errors.map(err => err.message).join(", ")
-        : "Oops! There was a problem.";
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
+
+      if (response.ok) {
+        formMessage.textContent = "Thank you! Your message has been sent.";
+        formMessage.style.color = "green";
+        form.reset();
+      } else {
+        const data = await response.json().catch(() => null);
+        formMessage.textContent = data && data.errors
+          ? data.errors.map(err => err.message).join(", ")
+          : "Oops! There was a problem.";
+        formMessage.style.color = "red";
+      }
+    } catch (error) {
+      formMessage.textContent = "Error sending message. Please try again later.";
       formMessage.style.color = "red";
     }
-  } catch (error) {
-    formMessage.textContent = "Error sending message. Please try again later.";
-    formMessage.style.color = "red";
-  }
+  });
 });
