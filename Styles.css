@@ -607,7 +607,7 @@ body.dark-theme .hamburger { color: #fff; }
     background-color: #5e7d69;
     padding-top: 60px;
     padding-bottom: 20px;
-    transition: left 0.50s ease-in-out, opacity 0.50s ease-in-out, width 0.50s ease-in-out;
+    transition: left 0.35s ease-in-out;
     z-index: 1000;
     overflow-y: auto;
   }
