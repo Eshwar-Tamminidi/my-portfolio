@@ -125,7 +125,6 @@ body.dark-theme .npl3 { color: #fcf8f8; }
   overflow-x: auto;         /* allow manual scroll */
   overflow-y: hidden;
   position: relative;
-  -webkit-overflow-scrolling: touch;
   cursor: grab;
   padding-bottom: 8px;
   scroll-behavior: smooth;
