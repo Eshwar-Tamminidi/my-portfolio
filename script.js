@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Close menu when any nav link is clicked
-    document.querySelectorAll("#navLinks a").forEach(link => {
+    document.querySelectorAll("#navLinks a").forEach((link) => {
       link.addEventListener("click", () => {
         navLinks.classList.remove("active");
         document.body.classList.remove("menu-open");
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function duplicateImages() {
     const originalImages = Array.from(slider.children);
     while (slider.scrollWidth < sliderContainer.clientWidth * 2) {
-      originalImages.forEach(img => {
+      originalImages.forEach((img) => {
         let clone = img.cloneNode(true);
         slider.appendChild(clone);
       });
@@ -103,28 +103,28 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* Resume animation for Slides on load */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let animatedElements = document.querySelectorAll(".Slide, .Slide2, .Slide3");
-  animatedElements.forEach(el => {
+  animatedElements.forEach((el) => {
     el.style.animationPlayState = "running";
   });
 });
 
 /* ===== Project expand/collapse ===== */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let projects = document.querySelectorAll(".project-container");
-  projects.forEach(project => {
-    project.addEventListener("click", function() {
+  projects.forEach((project) => {
+    project.addEventListener("click", function () {
       this.classList.toggle("active");
     });
   });
 });
 
 /* ===== Genie show on scroll ===== */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let genieElements = document.querySelectorAll(".genie-box");
   function showOnScroll(entries, observer) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
         observer.unobserve(entry.target);
@@ -132,8 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
   let observer = new IntersectionObserver(showOnScroll, { threshold: 0.3 });
-  genieElements.forEach(el => observer.observe(el));
-  setTimeout(() => { genieElements.forEach(el => el.classList.add("show")); }, 500);
+  genieElements.forEach((el) => observer.observe(el));
+  setTimeout(() => {
+    genieElements.forEach((el) => el.classList.add("show"));
+  }, 500);
 });
 
 /* ===== Communication reveal ===== */
@@ -142,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!communicationSection) return;
 
   function revealOnScroll(entries, observer) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
         observer.unobserve(entry.target);
@@ -157,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   let elements = document.querySelectorAll(".fade-in-left");
   function revealOnScroll(entries, observer) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
         observer.unobserve(entry.target);
@@ -165,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
-  elements.forEach(element => observer.observe(element));
+  elements.forEach((element) => observer.observe(element));
 });
 
 /* ===== Skills reveal ===== */
@@ -174,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!skillsSection) return;
 
   function revealOnScroll(entries, observer) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
         observer.unobserve(entry.target);
@@ -187,22 +189,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* ===== Education reveal after genie ===== */
 document.addEventListener("DOMContentLoaded", function () {
-  const genieBox = document.querySelector('.genie-box');
-  const educationSection = document.querySelector('.education-container');
+  const genieBox = document.querySelector(".genie-box");
+  const educationSection = document.querySelector(".education-container");
   if (!genieBox || !educationSection) return;
 
   function revealEducation() {
     const rect = educationSection.getBoundingClientRect();
     if (rect.top < window.innerHeight - 100) {
-      educationSection.classList.add('show');
-      window.removeEventListener('scroll', revealEducation);
+      educationSection.classList.add("show");
+      window.removeEventListener("scroll", revealEducation);
     }
   }
 
   setTimeout(() => {
-    genieBox.classList.add('show');
+    genieBox.classList.add("show");
     setTimeout(() => {
-      window.addEventListener('scroll', revealEducation);
+      window.addEventListener("scroll", revealEducation);
       revealEducation();
     }, 0);
   }, 1000);
@@ -224,8 +226,14 @@ document.addEventListener("DOMContentLoaded", function () {
     startX = e.pageX - certWrap.offsetLeft;
     scrollLeft = certWrap.scrollLeft;
   });
-  certWrap.addEventListener("mouseleave", () => { isDown = false; certWrap.classList.remove("dragging"); });
-  certWrap.addEventListener("mouseup", () => { isDown = false; certWrap.classList.remove("dragging"); });
+  certWrap.addEventListener("mouseleave", () => {
+    isDown = false;
+    certWrap.classList.remove("dragging");
+  });
+  certWrap.addEventListener("mouseup", () => {
+    isDown = false;
+    certWrap.classList.remove("dragging");
+  });
   certWrap.addEventListener("mousemove", (e) => {
     if (!isDown) return;
     e.preventDefault();
@@ -235,20 +243,34 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Touch
-  certWrap.addEventListener("touchstart", (e) => {
-    isDown = true;
-    startX = e.touches[0].pageX - certWrap.offsetLeft;
-    scrollLeft = certWrap.scrollLeft;
-  }, { passive: true });
+  certWrap.addEventListener(
+    "touchstart",
+    (e) => {
+      isDown = true;
+      startX = e.touches[0].pageX - certWrap.offsetLeft;
+      scrollLeft = certWrap.scrollLeft;
+    },
+    { passive: true }
+  );
 
-  certWrap.addEventListener("touchend", () => { isDown = false; }, { passive: true });
+  certWrap.addEventListener(
+    "touchend",
+    () => {
+      isDown = false;
+    },
+    { passive: true }
+  );
 
-  certWrap.addEventListener("touchmove", (e) => {
-    if (!isDown) return;
-    const x = e.touches[0].pageX - certWrap.offsetLeft;
-    const walk = (x - startX) * 1.6;
-    certWrap.scrollLeft = scrollLeft - walk;
-  }, { passive: true });
+  certWrap.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - certWrap.offsetLeft;
+      const walk = (x - startX) * 1.6;
+      certWrap.scrollLeft = scrollLeft - walk;
+    },
+    { passive: true }
+  );
 });
 
 /* ===== Theme Toggle ===== */
@@ -290,7 +312,7 @@ function initSnowEffect() {
         y: Math.random() * height,
         radius: Math.random() * 2 + 1,
         speedY: Math.random() * 1 + 0.5,
-        opacity: Math.random()
+        opacity: Math.random(),
       });
     }
   }
@@ -299,7 +321,7 @@ function initSnowEffect() {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "white";
     ctx.beginPath();
-    snowflakes.forEach(flake => {
+    snowflakes.forEach((flake) => {
       ctx.globalAlpha = flake.opacity;
       ctx.moveTo(flake.x, flake.y);
       ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
@@ -309,7 +331,7 @@ function initSnowEffect() {
   }
 
   function moveSnowflakes() {
-    snowflakes.forEach(flake => {
+    snowflakes.forEach((flake) => {
       flake.y += flake.speedY;
       if (flake.y > height) {
         flake.y = 0;
@@ -357,14 +379,189 @@ document.addEventListener("DOMContentLoaded", function () {
         form.reset();
       } else {
         const data = await response.json().catch(() => null);
-        formMessage.textContent = data && data.errors
-          ? data.errors.map(err => err.message).join(", ")
-          : "Oops! There was a problem.";
+        formMessage.textContent =
+          data && data.errors
+            ? data.errors.map((err) => err.message).join(", ")
+            : "Oops! There was a problem.";
         formMessage.style.color = "red";
       }
     } catch (error) {
-      formMessage.textContent = "Error sending message. Please try again later.";
+      formMessage.textContent =
+        "Error sending message. Please try again later.";
       formMessage.style.color = "red";
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(
+    "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
+  );
+  const navLinks = document.querySelectorAll(".nav-links li a");
+
+  function updateActiveLink() {
+    let current = "";
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom >= 150) {
+        current = "#" + sec.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === current) {
+        link.classList.add("active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", updateActiveLink);
+  window.addEventListener("resize", updateActiveLink);
+  updateActiveLink();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(
+    "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
+  );
+  const navLinks = document.querySelectorAll(".nav-links li a");
+  const highlight = document.getElementById("navHighlight");
+
+  function updateHighlight() {
+    let current = "";
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom >= 150) {
+        current = "#" + sec.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      if (link.getAttribute("href") === current) {
+        const rect = link.getBoundingClientRect();
+        const navRect = link.closest(".nav-right").getBoundingClientRect();
+
+        // Slide glass capsule smoothly
+        highlight.style.width = rect.width + "px";
+        highlight.style.height = rect.height + "px";
+        highlight.style.left = (rect.left - navRect.left) + "px";
+        highlight.style.top = (rect.top - navRect.top) + "px";
+      }
+    });
+  }
+
+  window.addEventListener("scroll", updateHighlight);
+  window.addEventListener("resize", updateHighlight);
+  updateHighlight();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
+
+  headings.forEach(heading => {
+    const line = heading.nextElementSibling; // the <hr> after heading
+    if (line && line.classList.contains("heading-line")) {
+      // set the line width equal to heading width
+      line.style.width = heading.offsetWidth + "px";
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+// ------------------ Bubble Background (Light Theme) ------------------
+const bubbleCanvas = document.getElementById("bubble-canvas");
+if (bubbleCanvas) {
+  const bubbleCtx = bubbleCanvas.getContext("2d");
+
+  let bubbles = [];
+  const maxBubbles = 40; // number of bubbles
+  const colors = ["rgba(255,255,255,0.4)", "rgba(200,220,255,0.3)", "rgba(255,255,255,0.2)"];
+
+  function resizeBubbleCanvas() {
+    bubbleCanvas.width = window.innerWidth;
+    bubbleCanvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeBubbleCanvas);
+  resizeBubbleCanvas();
+
+  function createBubble() {
+    return {
+      x: Math.random() * bubbleCanvas.width,
+      y: bubbleCanvas.height + Math.random() * 100,
+      radius: 3 + Math.random() * 10,
+      speed: 1 + Math.random() * 1.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      drift: (Math.random() - 0.5) * 0.5
+    };
+  }
+
+  function updateBubbles() {
+    bubbleCtx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height);
+    if (bubbles.length < maxBubbles) {
+      bubbles.push(createBubble());
+    }
+
+    bubbles.forEach((bubble, index) => {
+      bubble.y -= bubble.speed;
+      bubble.x += bubble.drift;
+
+      bubbleCtx.beginPath();
+      bubbleCtx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+      bubbleCtx.fillStyle = bubble.color;
+      bubbleCtx.fill();
+
+      if (bubble.y + bubble.radius < 0) {
+        bubbles[index] = createBubble();
+      }
+    });
+
+    requestAnimationFrame(updateBubbles);
+  }
+
+  updateBubbles();
+}

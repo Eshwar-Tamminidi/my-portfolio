@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   />
-  <title>My Portfolio</title>
+  <title>Eshwar's Portfolio</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,10 +47,15 @@
 </head>
 
 <body>
+  <!-- Bubble canvas (only visible in light theme) -->
+<canvas id="bubble-canvas"></canvas>
+
   <!-- Navbar -->
+    <!-- Navbar -->
   <div class="navig">
     <nav class="navbar">
       <div class="navdiv">
+        <!-- Left logo -->
         <a aria-label="Home">
           <dotlottie-player
             src="https://lottie.host/8a26ad38-27f7-4509-acdb-7fdf5e8b10fd/pse3C5Gbqe.lottie"
@@ -62,39 +67,44 @@
           ></dotlottie-player>
         </a>
 
-        <!-- Hamburger (hidden on desktop, visible on mobile) -->
-        <div class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</div>
-      </div>
+        <!-- Right links + hamburger -->
+        <div class="nav-right">
+          <div class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</div>
+  <div class="nav-highlight" id="navHighlight"></div>  <!-- 🔹 highlight glass -->
+          <ul class="nav-links" id="navLinks">
+  
+  <li><a href="#home2">Home</a></li>
+  <li><a href="#about">About</a></li>
+  <li><a href="#education2">Education</a></li>
+  <li><a href="#skills">Skills</a></li>
+  <li><a href="#projects">Projects</a></li>
+  <li><a href="#certifications2">Certifications</a></li>
+  <li><a href="#communication">Communication</a></li>
+  <li><a href="#resume">Resume</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><button id="theme-toggle" class="theme-toggle" type="button">🌙</button></li>
+</ul>
 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#certifications">Certifications</a></li>
-        <li><a href="#communication">Communication</a></li>
-        <li><a href="#resume">Resume</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><button id="theme-toggle" class="theme-toggle" type="button">🌙 Toggle Theme</button></li>
-      </ul>
+        </div>
+      </div>
 
       <hr class="clear-line" />
       <hr class="dotted-line" />
     </nav>
   </div>
-
+<div class="nc" id="home2">
   <div class="genie-box">
     <script
       src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
       type="module"
     ></script>
 
-    <div class="fade-in-left">
-      <div>
+    <div class="fade-in-left"><br /><br /><br />
+      <div><div class="first">
         <div class="Home" id="home">
-          <div class="pre">
-            <br /><br /><br /><br /><br /><br /><br />
+          <div class="pre"><br /><br />
+            
+            
             <img
               class="profile-image"
               src="prof.png"
@@ -105,18 +115,16 @@
           </div>
           <h1 class="npl">Eshwar Chowdary T</h1>
           <br /><br />
-          <h2 class="subtitle">Software Developer</h2>
+          <h3 class="subtitle">Aspiring Software Engineer</h3>
           <div class="detail">
             <br /><br />
             <p class="description">
-              Welcome to my portfolio! I am a passionate software developer with
-              expertise in full stack web development, Java, Python, and C
-              programming. Explore my projects and skills below.
+              Welcome to my portfolio! I am an Information Science student passionate about programming and web development in Java, Python, and C. Explore my projects and skills below.
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </div></div></div></div>
     <br /><br />
 
     <!-- About -->
@@ -124,28 +132,18 @@
       <div class="About" id="about">
         <hr class="animated-line2" />
         <hr class="animated-line" />
-        <a><h3 class="npl"><u>ABOUT</u></h3></a>
-        <div>
+        
+        
+        <div class="New flex-about second"> 
+        <div><a><h3 class="npl"><u>ABOUT</u></h3><hr class="heading-line"></a><br><br>
           <div class="New flex-about">
             <div class="about-text fade-in-left">
               <a>
-                Name: Eshwar Chowdary T<br />Software Developer<br />
+                Name: Eshwar Chowdary T<br />Aspiring Software Engineer<br />
               </a>
               <br /><br />
               <a>
-                Hello! I'm Eshwar Chowdary T, a passionate and detail-oriented
-                engineering student pursuing a Bachelor of Engineering at RV
-                Institute of Technology and Management, Bengaluru. With a CGPA
-                of 8.2, I am a motivated Information Science and Engineering
-                student with a strong passion for technology, problem-solving,
-                and continuous learning. I enjoy working on innovative projects
-                that blend creativity with technical skills, particularly in
-                software development, databases, and AI tools. With a foundation
-                in programming, analytical thinking, and teamwork, I aim to
-                contribute to impactful solutions while continuously enhancing
-                my skills. I am eager to take on challenges, adapt to new
-                environments, and grow into a professional who adds value to
-                both the organization and society.
+                Hello! I'm Eshwar Chowdary T, an enthusiastic and goal-oriented Information Science and Engineering student pursuing my Bachelor's degree at RV Institute of Technology and Management, Bengaluru. With a CGPA of 8.2, I am motivated to build a strong foundation in technology, problem-solving, and programming. I enjoy learning new skills, working on projects that challenge my analytical abilities, and exploring innovative solutions using technology. I am eager to contribute to meaningful projects, continuously improve my knowledge, and grow as a professional in the tech industry.
               </a>
               <br /><br /><br />
               <a>🔗 Let's Connect</a>
@@ -186,14 +184,15 @@
             </div>
           </div>
         </div>
-      </div>
+      </div></div></div>
 
       <hr class="animated-line2" />
-      <hr class="animated-line" />
-
+      <hr class="animated-line" /><div class="not" id="education2">
+<div class="fade-in-left">
       <!-- Education -->
+       <div class="first">
       <div class="education-container" id="education">
-        <h3 class="edu-title"><u>Education</u></h3>
+        <h3 class="edu-title">Education</h3><hr class="heading-line"><br><br>
         <div class="education-grid">
           <div class="education-card">
             <img src="rvitm1.png" alt="RVITM" class="edu-logo" />
@@ -207,16 +206,17 @@
             <p>Sri Vidyanikethan PU College</p>
           </div>
         </div>
-      </div>
-    </div>
+      </div></div>
+    </div></div>
 
     <hr class="designed-line" />
     <hr class="designed-line2" />
 
     <!-- Skills -->
-    <h3 class="npl" id="skills">
-      <div class="fade-in-left"><u>Technical Skills</u></div>
-    </h3>
+     <div class="not" id="skills">
+     <div class="first">
+    <h3 class="npl" >Technical Skills</h3><hr class="heading-line"><br><br>
+    
     <div class="skills-envelope">
       <ul class="skills-list">
         <li class="skill-item">Full Stack Web Development</li>
@@ -225,7 +225,7 @@
         <li class="skill-item">C Programming</li>
         <li class="skill-item">Data Structures</li>
       </ul>
-    </div>
+    </div></div></div>
     <br /><br />
 
     <hr class="clear-line2" />
@@ -258,13 +258,15 @@
     <hr class="clear-line2" />
 
     <hr class="designed-line" />
+    <div class="not" id="projects">
     <hr class="designed-line2" />
 
     <!-- Projects -->
+     <div class="first">
     <div class="fade-in-left">
-      <div class="Projects" id="projects">
+      <div class="Projects">
         <div class="Proh">
-          <h3 class="npl2"><u>Projects</u></h3>
+          <h3 class="npl2"><u>Projects</u></h3><hr class="heading-line"><br><br>
         </div>
         <div class="lap">
           <dotlottie-player
@@ -319,6 +321,23 @@
                 financial transactions with description, type, and amount,
                 allowing users to view a complete transaction history in an
                 organized format.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="project-container">
+          <div class="project-title">AI Blockchain Chatbot</div>
+          <div class="project-details">
+            <ul class="det">
+              <li>
+                Designed and implemented a full-stack Blockchain Chatbot leveraging HTML, CSS, JavaScript, and Flask, featuring a responsive and interactive chat interface.
+              </li>
+              <li>
+                Integrated NVIDIA LLaMA API with blockchain dataset context, enabling AI-driven, context-aware responses to user queries.
+              </li>
+              <li>
+                Developed session-based memory management, maintaining per-user conversation history for personalized and coherent interactions.
               </li>
             </ul>
           </div>
@@ -420,13 +439,13 @@
           </div>
         </div>
       </div>
-    </div>
-
+    </div></div></div>
+<div class="nepl" id="certifications2">
     <br /><br />
     <hr class="designed-line" />
     <hr class="designed-line2" />
-
-    <!-- Certifications (manual drag/ swipe) --><h3 class="npl"><u class="npl3">Certifications</u></h3>
+<div class="first">
+    <!-- Certifications (manual drag/ swipe) --><h3 class="npl3"><u >Certifications</u></h3><hr class="heading-line"><br><br>
     <div class="Certifications" id="certifications">
       
       <div class="Certfi">
@@ -435,7 +454,7 @@
         <img src="jaaa.png" alt="Programming Using Java" height="220" width="33%" />
         <img src="Map.png" alt="Mastering Prompting" height="220" width="33%" />
         <img src="dsa.png" alt="DSA" height="220" width="33%" />
-        <img src="AI.png" alt="Intro to AI" height="220" width="33%" />
+        <img src="AI.png" alt="Intro to AI" height="220" width="33%" /><img src="cou.png" alt="Coursera" height="220" width="33%" />
         <img src="dbms1.png" alt="DBMS Part 1" height="220" width="33%" />
         <img src="dbms2.png" alt="DBMS Part 2" height="220" width="33%" />
         <img src="Javac.png" alt="Java Certification" height="220" width="33%" />
@@ -444,16 +463,17 @@
         <img src="iit.png" alt="Workshop" height="220" width="33%" />
         <img src="sead.png" alt="SE & Agile" height="220" width="33%" />
         <img src="Ndliee.png" alt="Aptitude Test 2" height="220" width="33%" />
-        <img src="cou.png" alt="Coursera" height="220" width="33%" />
+        
       </div>
-    </div>
-
+    </div></div>
+</div>
     <hr class="animated-line2" />
+    <div class="not" id="communication">
     <hr class="animated-line" />
-
+<div class="first">
     <!-- Communication -->
-    <div class="npl2" id="communication">
-      <h3><u>Communication</u></h3>
+    <div class="npl2">
+      <h3 class="npl3"><u>Communication</u></h3><hr class="heading-line"><br>
     </div>
     <div class="communication-envelope">
       <ul class="communication-list">
@@ -461,15 +481,17 @@
         <li class="comm-item">Kannada ⭐️⭐️⭐️⭐️⭐️</li>
         <li class="comm-item">Telugu ⭐️⭐️⭐️⭐️⭐️</li>
       </ul>
-    </div>
+    </div></div></div>
 
     <hr class="designed-line" />
+    <div class="not" id="resume">
     <hr class="designed-line2" />
 
     <!-- Resume -->
+     <div class="first">
     <div class="fade-in-left">
       <br /><br />
-      <div class="ress" id="resume">
+      <div class="ress">
         <div></div>
         <div>
           <dotlottie-player
@@ -495,16 +517,18 @@
           />
         </div>
       </div>
-    </div>
+    </div></div></div>
 
     <br /><br />
     <hr class="designed-line" />
+    <div class="not" id="contact">
     <hr class="designed-line2" />
 
     <!-- Contact -->
-    <div class="fade-in-left">
-      <div class="Contact" id="contact">
-        <a><h3 class="npl"><u>Contact</u></h3></a>
+     
+    <div class="fade-in-left"><div class="first">
+      <div class="Contact">
+        <h3 class="npl"><u>Contact</u></h3><hr class="heading-line"><br><br>
         <div class="contact-container">
           <form
             id="contactForm"
@@ -529,7 +553,7 @@
           <div id="formMessage"></div>
         </div>
         <br /><br />
-      </div>
+      </div></div></div>
 
       <br />
       <hr class="clear-line3" />
