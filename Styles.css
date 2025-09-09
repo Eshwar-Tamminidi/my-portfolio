@@ -942,22 +942,25 @@ input:focus, textarea:focus {
 .submit-button {
   width: 100%;
   padding: 12px;
-  background-color: #2e8b57;
+  background-color: #339096;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
 }
 
 body.dark-theme .submit-button {
-  background-color: #1a5d3b;
+  background-color: #2e858b;
   color: #fdfdfd;
   width: 100%;
 }
+body.dark-theme .submit-button:hover {
+  background-color: #06b1f4;
+}
 
 .submit-button:hover {
-  background-color: #246b45;
+  background-color: #4aa0e6;
 }
 
 #formMessage {
@@ -1327,7 +1330,9 @@ body.menu-open {
 
 
 
-
+.Contact_Lable{
+  text-align: left;
+}
 
 
 
