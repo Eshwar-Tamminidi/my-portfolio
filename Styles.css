@@ -225,9 +225,10 @@ body.dark-theme .npl3 {
   cursor: grab;
   padding-bottom: 8px;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;  /* snap horizontally */
+  scroll-snap-type: x mandatory;
+  /* snap horizontally */
   -webkit-overflow-scrolling: touch;
-  
+
 }
 
 
@@ -250,7 +251,8 @@ body.dark-theme .npl3 {
   height: 220px;
   margin-right: 10px;
   border-radius: 8px;
-  scroll-snap-align: start; /* snap each image to start */
+  scroll-snap-align: start;
+  /* snap each image to start */
 }
 
 /* About */
@@ -759,57 +761,40 @@ body.dark-theme #snow-canvas {
   text-decoration: none;
 }
 
+body.dark-theme .navbar {
+  width: 97%;
+}
+
 .navbar {
-
-  /* Navbar container */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    /* Space between logo (left) and links (right) */
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    /* Prevents horizontal scroll */
-    width: 100%;
-    background: rgba(27, 157, 222, 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(50px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    padding: 10px;
-    margin: 20px auto;
-    text-align: center;
-    max-width: 100%;
-    font-family: calibri;
-    padding-right: 15px;
-    padding-left: 15px;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-  }
-
-
-
-  font-family: calibri;
-  padding-right: 15px;
-  padding-left: 15px;
   position: fixed;
   top: 0;
-  width: 100%;
   z-index: 1000;
+
+  left: 0;
+  right: 0;
+  /* ✅ ensures it centers automatically */
+  margin: 10px auto;
+  /* ✅ vertical spacing + center horizontally */
+  margin-left: 10px auto;
+  margin-right: 10px auto;
+
+  width: auto;
+  /* ✅ let content define width */
+  max-width: calc(100% - 50px);
+  /* ✅ always leave 20px gap on both sides */
+
   background: rgba(91, 156, 188, 0.8);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(50px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
-  padding: 10px;
-  margin: 20px auto;
+  padding: 10px 20px;
+  /* ✅ inside spacing */
   text-align: center;
-  max-width: 100%;
+  font-family: calibri;
 }
+
 
 .nav-right {
   display: flex;
@@ -955,6 +940,7 @@ body.dark-theme .submit-button {
   color: #fdfdfd;
   width: 100%;
 }
+
 body.dark-theme .submit-button:hover {
   background-color: #06b1f4;
 }
@@ -971,20 +957,23 @@ body.dark-theme .submit-button:hover {
 
 /* Theme toggle button style */
 .theme-toggle {
-  background-color: gray;
+  background-color: rgb(253, 252, 252);
   margin-left: 10px;
-  border-radius: 10px;
   padding: 10px;
-  width: 100px;
+  width: 45px;
   color: white;
+  font-size: 20px;
   font-weight: bold;
+  margin-top: -18px;
   font-size: 15px;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .theme-toggle:hover {
-  background-color: gray;
+  background-color: rgb(4, 4, 4);
 }
 
 body.dark-theme .theme-toggle {
@@ -992,7 +981,7 @@ body.dark-theme .theme-toggle {
 }
 
 body.dark-theme .theme-toggle:hover {
-  background-color: #333;
+  background-color: #ffffff;
 }
 
 /* Desktop defaults */
@@ -1027,7 +1016,7 @@ body.dark-theme .theme-toggle:hover {
   cursor: pointer;
   position: relative;
   right: 0;
-  margin-right: 15px;
+  margin-right: -10px;
   z-index: 1100;
 }
 
@@ -1049,7 +1038,8 @@ body.dark-theme .hamburger {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 35px;
     padding: 20px;
-    margin: 20px;
+    margin: 20px auto;
+
     text-align: center;
     /* Hidden by default */
     flex-direction: column;
@@ -1058,7 +1048,7 @@ body.dark-theme .hamburger {
     top: 0;
     right: -100%;
     /* hidden initially */
-    width: 200px;
+    width: 150px;
     height: 100vh;
     border-radius: 20px 0 0 20px;
 
@@ -1074,12 +1064,29 @@ body.dark-theme .hamburger {
     overflow-y: auto;
   }
 
+  .theme-toggle {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20px;
+    margin-right: -55px;
+
+
+  }
+
   .nav-links.active {
     display: flex;
     /* Show when hamburger is clicked */
 
     right: 0;
     /* slide in */
+  }
+
+  .navbar {
+    width: 90%;
+  }
+
+  body.dark-theme .navbar {
+    width: 88%;
   }
 
   .hamburger {
@@ -1092,7 +1099,7 @@ body.dark-theme .hamburger {
 
   .nav-links li {
     margin: 10px 0;
-    width: 100%;
+    width: 80%;
     /* make each link take full width */
   }
 
@@ -1330,7 +1337,7 @@ body.menu-open {
 
 
 
-.Contact_Lable{
+.Contact_Lable {
   text-align: left;
 }
 
@@ -1346,10 +1353,13 @@ body.menu-open {
   left: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none; /* Don’t block clicks */
-  z-index: -1; /* Behind everything */
+  pointer-events: none;
+  /* Don’t block clicks */
+  z-index: -1;
+  /* Behind everything */
 }
 
 body.dark-theme #bubble-canvas {
-  display: none; /* Hide bubbles in dark theme */
+  display: none;
+  /* Hide bubbles in dark theme */
 }

@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let diffX = startX - endX;
 
       // If swiped left more than 50px → close menu
-      if (diffX > 50) {
+      if (diffX < -50) {
         navLinks.classList.remove("active");
         document.body.classList.remove("menu-open");
         hamburger.setAttribute("aria-expanded", "false");
@@ -393,15 +393,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(
     "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
@@ -410,14 +401,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateActiveLink() {
     let current = "";
-    sections.forEach(sec => {
+    sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 150 && rect.bottom >= 150) {
         current = "#" + sec.id;
       }
     });
 
-    navLinks.forEach(link => {
+    navLinks.forEach((link) => {
       link.classList.remove("active");
       if (link.getAttribute("href") === current) {
         link.classList.add("active");
@@ -430,19 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateActiveLink();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(
     "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
@@ -452,14 +430,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateHighlight() {
     let current = "";
-    sections.forEach(sec => {
+    sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 150 && rect.bottom >= 150) {
         current = "#" + sec.id;
       }
     });
 
-    navLinks.forEach(link => {
+    navLinks.forEach((link) => {
       if (link.getAttribute("href") === current) {
         const rect = link.getBoundingClientRect();
         const navRect = link.closest(".nav-right").getBoundingClientRect();
@@ -467,8 +445,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Slide glass capsule smoothly
         highlight.style.width = rect.width + "px";
         highlight.style.height = rect.height + "px";
-        highlight.style.left = (rect.left - navRect.left) + "px";
-        highlight.style.top = (rect.top - navRect.top) + "px";
+        highlight.style.left = rect.left - navRect.left + "px";
+        highlight.style.top = rect.top - navRect.top + "px";
       }
     });
   }
@@ -478,23 +456,10 @@ document.addEventListener("DOMContentLoaded", () => {
   updateHighlight();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
 
-  headings.forEach(heading => {
+  headings.forEach((heading) => {
     const line = heading.nextElementSibling; // the <hr> after heading
     if (line && line.classList.contains("heading-line")) {
       // set the line width equal to heading width
@@ -503,16 +468,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
 // ------------------ Bubble Background (Light Theme) ------------------
 const bubbleCanvas = document.getElementById("bubble-canvas");
 if (bubbleCanvas) {
@@ -520,7 +475,11 @@ if (bubbleCanvas) {
 
   let bubbles = [];
   const maxBubbles = 40; // number of bubbles
-  const colors = ["rgba(255,255,255,0.4)", "rgba(200,220,255,0.3)", "rgba(255,255,255,0.2)"];
+  const colors = [
+    "rgba(255,255,255,0.4)",
+    "rgba(200,220,255,0.3)",
+    "rgba(255,255,255,0.2)",
+  ];
 
   function resizeBubbleCanvas() {
     bubbleCanvas.width = window.innerWidth;
@@ -536,7 +495,7 @@ if (bubbleCanvas) {
       radius: 3 + Math.random() * 10,
       speed: 1 + Math.random() * 1.5,
       color: colors[Math.floor(Math.random() * colors.length)],
-      drift: (Math.random() - 0.5) * 0.5
+      drift: (Math.random() - 0.5) * 0.5,
     };
   }
 
