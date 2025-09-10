@@ -291,6 +291,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const isDark = body.classList.contains("dark-theme");
       localStorage.setItem("theme", isDark ? "dark" : "light");
       toggleBtn.textContent = isDark ? "☀️" : "🌙";
+
+      if (isDark) {
+        initSnowEffect(); // ✅ start snow when dark mode is enabled
+      } else {
+        // optional: clear canvas if you want snow to disappear instantly in light mode
+        const canvas = document.getElementById("snow-canvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
     });
   }
 });
