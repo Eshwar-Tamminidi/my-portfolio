@@ -31,8 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
       startX = e.touches[0].clientX;
     });
 
-
-
     // Touch end (check swipe)
     navLinks.addEventListener("touchend", function (e) {
       let endX = e.changedTouches[0].clientX;
@@ -276,38 +274,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* ===== Theme Toggle ===== */
-document.addEventListener("DOMContentLoaded", function () {
-  const toggleBtn = document.getElementById("theme-toggle");
-  const body = document.body;
-
-  if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark-theme");
-    if (toggleBtn) toggleBtn.textContent = "☀️";
-  } else {
-    if (toggleBtn) toggleBtn.textContent = "🌙";
-  }
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-  body.classList.toggle("dark-theme");
-  const isDark = body.classList.contains("dark-theme");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  toggleBtn.textContent = isDark ? "☀️" : "🌙";
-
-  if (isDark) {
-    initSnowEffect();   // ✅ start snow when dark mode is enabled
-  } else {
-    // optional: clear canvas if you want snow to disappear instantly in light mode
-    const canvas = document.getElementById("snow-canvas");
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }
-});
-
-  }
-});
 
 /* ===== Snow Effect (dark mode only) ===== */
 function initSnowEffect() {
@@ -407,29 +373,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(
     "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
@@ -439,14 +382,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateMobileActive() {
     let current = "";
-    sections.forEach(sec => {
+    sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 150 && rect.bottom >= 150) {
         current = "#" + sec.id;
       }
     });
 
-    navLinks.forEach(link => {
+    navLinks.forEach((link) => {
       link.classList.remove("active");
       if (link.getAttribute("href") === current) {
         link.classList.add("active");
@@ -456,22 +399,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateDesktopHighlight() {
     let current = "";
-    sections.forEach(sec => {
+    sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 150 && rect.bottom >= 150) {
         current = "#" + sec.id;
       }
     });
 
-    navLinks.forEach(link => {
+    navLinks.forEach((link) => {
       if (link.getAttribute("href") === current) {
         const rect = link.getBoundingClientRect();
         const navRect = link.closest(".nav-right").getBoundingClientRect();
 
         highlight.style.width = rect.width + "px";
         highlight.style.height = rect.height + "px";
-        highlight.style.left = (rect.left - navRect.left) + "px";
-        highlight.style.top = (rect.top - navRect.top) + "px";
+        highlight.style.left = rect.left - navRect.left + "px";
+        highlight.style.top = rect.top - navRect.top + "px";
       }
     });
   }
@@ -491,39 +434,10 @@ document.addEventListener("DOMContentLoaded", () => {
   updateIndicator();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
 
-  headings.forEach(heading => {
+  headings.forEach((heading) => {
     const line = heading.nextElementSibling; // the <hr> after heading
     if (line && line.classList.contains("heading-line")) {
       // set the line width equal to heading width
@@ -532,16 +446,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
 // ------------------ Bubble Background (Light Theme) ------------------
 const bubbleCanvas = document.getElementById("bubble-canvas");
 if (bubbleCanvas) {
@@ -549,7 +453,11 @@ if (bubbleCanvas) {
 
   let bubbles = [];
   const maxBubbles = 40; // number of bubbles
-  const colors = ["rgba(255,255,255,0.4)", "rgba(200,220,255,0.3)", "rgba(255,255,255,0.2)"];
+  const colors = [
+    "rgba(255,255,255,0.4)",
+    "rgba(200,220,255,0.3)",
+    "rgba(255,255,255,0.2)",
+  ];
 
   function resizeBubbleCanvas() {
     bubbleCanvas.width = window.innerWidth;
@@ -565,7 +473,7 @@ if (bubbleCanvas) {
       radius: 3 + Math.random() * 10,
       speed: 1 + Math.random() * 1.5,
       color: colors[Math.floor(Math.random() * colors.length)],
-      drift: (Math.random() - 0.5) * 0.5
+      drift: (Math.random() - 0.5) * 0.5,
     };
   }
 
@@ -594,3 +502,279 @@ if (bubbleCanvas) {
 
   updateBubbles();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const intro = document.getElementById("intro");
+  document.body.classList.add("intro-active"); // intro mode ON
+
+  function closeIntro() {
+    intro.classList.add("hidden"); // slide up
+    setTimeout(() => {
+      document.body.classList.remove("intro-active"); // unlock site
+    }, 1000); // match transition duration
+    window.removeEventListener("wheel", onScroll);
+    window.removeEventListener("touchmove", onScroll);
+  }
+
+  function onScroll() {
+    if (!intro.classList.contains("hidden")) {
+      closeIntro();
+    }
+  }
+
+  // Trigger intro close on scroll or swipe
+  window.addEventListener("wheel", onScroll, { passive: true });
+  window.addEventListener("touchmove", onScroll, { passive: true });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const intro = document.getElementById("intro");
+  const exploreBtn = document.getElementById("exploreBtn");
+
+  if (!intro) return;
+
+  // Lock scroll while intro is visible
+  document.body.style.overflow = "hidden";
+  document.body.classList.add("intro-active");
+
+  let introClosed = false;
+
+  function unlockScroll() {
+    document.body.style.overflow = "";
+    document.body.classList.remove("intro-active");
+  }
+
+  function closeIntro() {
+    if (introClosed) return; // Prevent double triggers
+    introClosed = true;
+
+    intro.classList.add("hidden"); // slide up
+    setTimeout(unlockScroll, 1000); // match CSS transition
+
+    // Remove listeners
+    window.removeEventListener("wheel", onScrollUnlock);
+    window.removeEventListener("touchstart", onTouchStart);
+    window.removeEventListener("touchmove", onTouchMove);
+  }
+
+  // --- Touch swipe detection ---
+  let startY = 0;
+  function onTouchStart(e) {
+    startY = e.touches[0].clientY;
+  }
+
+  function onTouchMove(e) {
+    const diffY = startY - e.touches[0].clientY;
+    if (diffY > 50) {
+      // swipe up threshold
+      closeIntro();
+    }
+  }
+
+  // Scroll / wheel
+  function onScrollUnlock() {
+    closeIntro();
+  }
+
+  window.addEventListener("wheel", onScrollUnlock, { passive: true });
+  window.addEventListener("touchstart", onTouchStart, { passive: true });
+  window.addEventListener("touchmove", onTouchMove, { passive: true });
+
+  // Explore button
+  if (exploreBtn) {
+    exploreBtn.addEventListener("click", closeIntro);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const intro = document.getElementById("intro");
+  const exploreBtn = document.getElementById("exploreBtn");
+
+  if (!intro) return;
+
+  // Lock scroll
+  document.body.style.overflow = "hidden"; // prevent main page scroll
+
+  function closeIntro() {
+    if (!intro.classList.contains("hidden")) {
+      intro.classList.add("hidden");
+      document.body.classList.remove("intro-active");
+      document.body.style.overflow = ""; // unlock scroll
+
+      // Start main page typing (if needed)
+      const mainTyping = document.querySelector(".typing-text-main");
+      const mainWords = ["a Developer", "an Innovator", "a Coder"];
+      if (mainTyping) startTyping(mainTyping, mainWords);
+    }
+  }
+
+  function onScroll() {
+    closeIntro();
+    window.removeEventListener("wheel", onScroll);
+    window.removeEventListener("touchmove", onScroll);
+  }
+
+  window.addEventListener("wheel", onScroll, { passive: true });
+  window.addEventListener("touchmove", onScroll, { passive: true });
+
+  if (exploreBtn) exploreBtn.addEventListener("click", closeIntro);
+
+  // Typing effect function
+  function startTyping(
+    container,
+    words,
+    typingSpeed = 120,
+    deletingSpeed = 60,
+    pauseDelay = 1200
+  ) {
+    let wordIndex = 0,
+      charIndex = 0,
+      isDeleting = false;
+    function typeLoop() {
+      const currentWord = words[wordIndex];
+      if (isDeleting) {
+        charIndex--;
+        container.textContent = currentWord.substring(0, charIndex);
+      } else {
+        charIndex++;
+        container.textContent = currentWord.substring(0, charIndex);
+      }
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+        setTimeout(typeLoop, pauseDelay);
+        return;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+      }
+
+      setTimeout(typeLoop, isDeleting ? deletingSpeed : typingSpeed);
+    }
+    typeLoop();
+  }
+
+  // Start intro typing
+  const introTyping = intro.querySelector(".typing-text");
+  const introWords = [
+    "Aspiring Software Engineer 🚀",
+    "Full Stack Developer 💻",
+    "Problem Solver 🧩",
+    "Tech Explorer 🌌",
+  ];
+  if (introTyping) startTyping(introTyping, introWords);
+});
+
+// Parallax hover on intro
+document.addEventListener("mousemove", (e) => {
+  const intro = document.getElementById("intro");
+  if (!intro || intro.classList.contains("hidden")) return;
+
+  const x = (e.clientX / window.innerWidth - 0.5) * 10;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+  intro.querySelector(
+    ".intro-content"
+  ).style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// Explore button → close intro and scroll to home
+document.addEventListener("DOMContentLoaded", () => {
+  const exploreBtn = document.getElementById("exploreBtn");
+  const intro = document.getElementById("intro");
+
+  if (exploreBtn && intro) {
+    exploreBtn.addEventListener("click", () => {
+      intro.classList.add("hidden"); // slide intro up
+      setTimeout(() => {
+        document.body.classList.remove("intro-active"); // unlock site
+        document.getElementById("home2").scrollIntoView({
+          behavior: "smooth", // ✅ smooth scroll
+        });
+      }, 1000); // match your intro transition duration
+    });
+  }
+});
+
+// Dynamically set scroll-padding-top based on navbar height
+document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.querySelector(".navbar");
+  if (!navbar) return;
+
+  function updateScrollPadding() {
+    const navHeight = navbar.offsetHeight;
+    document.documentElement.style.scrollPaddingTop = navHeight + "px";
+  }
+
+  updateScrollPadding();
+  window.addEventListener("resize", updateScrollPadding);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const themeBtnIntro = document.getElementById("themeBtn"); // intro button
+  const body = document.body;
+
+  // Initialize theme from localStorage
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-theme");
+    initSnowEffect();
+  } else {
+    body.classList.remove("dark-theme");
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark-theme");
+    const isDark = document.body.classList.contains("dark-theme");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    // Snow effect
+    if (isDark) initSnowEffect();
+    else {
+      const canvas = document.getElementById("snow-canvas");
+      if (canvas)
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Attach to both buttons
+  document.getElementById("themeBtn")?.addEventListener("click", toggleTheme); // intro
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("click", toggleTheme); // main
+
+  // Attach toggle to intro button
+  if (themeBtnIntro) {
+    themeBtnIntro.addEventListener("click", toggleTheme);
+  }
+
+  // Attach toggle to main theme button (optional)
+  const mainThemeBtn = document.getElementById("theme-toggle");
+  if (mainThemeBtn) {
+    mainThemeBtn.addEventListener("click", toggleTheme);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const themeToggles = document.querySelectorAll(".theme-toggle");
+
+  function setTheme(isDark) {
+    if (isDark) {
+      document.body.classList.add("dark-theme");
+      themeToggles.forEach((btn) => (btn.textContent = "☀️"));
+    } else {
+      document.body.classList.remove("dark-theme");
+      themeToggles.forEach((btn) => (btn.textContent = "🌙"));
+    }
+  }
+
+  function toggleTheme() {
+    const isDark = !document.body.classList.contains("dark-theme");
+    setTheme(isDark);
+  }
+
+  // Attach event to both buttons
+  themeToggles.forEach((btn) => btn.addEventListener("click", toggleTheme));
+
+  // 🔥 Initialize with dark theme by default
+  setTheme(true);
+});
