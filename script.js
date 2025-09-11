@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
       startX = e.touches[0].clientX;
     });
 
+
+
     // Touch end (check swipe)
     navLinks.addEventListener("touchend", function (e) {
       let endX = e.changedTouches[0].clientX;
@@ -287,22 +289,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
-      body.classList.toggle("dark-theme");
-      const isDark = body.classList.contains("dark-theme");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-      toggleBtn.textContent = isDark ? "☀️" : "🌙";
+  body.classList.toggle("dark-theme");
+  const isDark = body.classList.contains("dark-theme");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  toggleBtn.textContent = isDark ? "☀️" : "🌙";
 
-      if (isDark) {
-        initSnowEffect(); // ✅ start snow when dark mode is enabled
-      } else {
-        // optional: clear canvas if you want snow to disappear instantly in light mode
-        const canvas = document.getElementById("snow-canvas");
-        if (canvas) {
-          const ctx = canvas.getContext("2d");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-    });
+  if (isDark) {
+    initSnowEffect();   // ✅ start snow when dark mode is enabled
+  } else {
+    // optional: clear canvas if you want snow to disappear instantly in light mode
+    const canvas = document.getElementById("snow-canvas");
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+});
+
   }
 });
 
@@ -404,33 +407,28 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const sections = document.querySelectorAll(
-    "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
-  );
-  const navLinks = document.querySelectorAll(".nav-links li a");
 
-  function updateActiveLink() {
-    let current = "";
-    sections.forEach((sec) => {
-      const rect = sec.getBoundingClientRect();
-      if (rect.top <= 150 && rect.bottom >= 150) {
-        current = "#" + sec.id;
-      }
-    });
 
-    navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === current) {
-        link.classList.add("active");
-      }
-    });
-  }
 
-  window.addEventListener("scroll", updateActiveLink);
-  window.addEventListener("resize", updateActiveLink);
-  updateActiveLink();
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(
@@ -439,38 +437,93 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".nav-links li a");
   const highlight = document.getElementById("navHighlight");
 
-  function updateHighlight() {
+  function updateMobileActive() {
     let current = "";
-    sections.forEach((sec) => {
+    sections.forEach(sec => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 150 && rect.bottom >= 150) {
         current = "#" + sec.id;
       }
     });
 
-    navLinks.forEach((link) => {
+    navLinks.forEach(link => {
+      link.classList.remove("active");
       if (link.getAttribute("href") === current) {
-        const rect = link.getBoundingClientRect();
-        const navRect = link.closest(".nav-right").getBoundingClientRect();
-
-        // Slide glass capsule smoothly
-        highlight.style.width = rect.width + "px";
-        highlight.style.height = rect.height + "px";
-        highlight.style.left = rect.left - navRect.left + "px";
-        highlight.style.top = rect.top - navRect.top + "px";
+        link.classList.add("active");
       }
     });
   }
 
-  window.addEventListener("scroll", updateHighlight);
-  window.addEventListener("resize", updateHighlight);
-  updateHighlight();
+  function updateDesktopHighlight() {
+    let current = "";
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom >= 150) {
+        current = "#" + sec.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      if (link.getAttribute("href") === current) {
+        const rect = link.getBoundingClientRect();
+        const navRect = link.closest(".nav-right").getBoundingClientRect();
+
+        highlight.style.width = rect.width + "px";
+        highlight.style.height = rect.height + "px";
+        highlight.style.left = (rect.left - navRect.left) + "px";
+        highlight.style.top = (rect.top - navRect.top) + "px";
+      }
+    });
+  }
+
+  function updateIndicator() {
+    if (window.innerWidth <= 768) {
+      updateMobileActive();
+      if (highlight) highlight.style.opacity = "0"; // hide highlight on mobile
+    } else {
+      updateDesktopHighlight();
+      if (highlight) highlight.style.opacity = "1"; // show highlight on desktop
+    }
+  }
+
+  window.addEventListener("scroll", updateIndicator);
+  window.addEventListener("resize", updateIndicator);
+  updateIndicator();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
 
-  headings.forEach((heading) => {
+  headings.forEach(heading => {
     const line = heading.nextElementSibling; // the <hr> after heading
     if (line && line.classList.contains("heading-line")) {
       // set the line width equal to heading width
@@ -479,6 +532,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+
+
+
+
+
+
+
+
 // ------------------ Bubble Background (Light Theme) ------------------
 const bubbleCanvas = document.getElementById("bubble-canvas");
 if (bubbleCanvas) {
@@ -486,11 +549,7 @@ if (bubbleCanvas) {
 
   let bubbles = [];
   const maxBubbles = 40; // number of bubbles
-  const colors = [
-    "rgba(255,255,255,0.4)",
-    "rgba(200,220,255,0.3)",
-    "rgba(255,255,255,0.2)",
-  ];
+  const colors = ["rgba(255,255,255,0.4)", "rgba(200,220,255,0.3)", "rgba(255,255,255,0.2)"];
 
   function resizeBubbleCanvas() {
     bubbleCanvas.width = window.innerWidth;
@@ -506,7 +565,7 @@ if (bubbleCanvas) {
       radius: 3 + Math.random() * 10,
       speed: 1 + Math.random() * 1.5,
       color: colors[Math.floor(Math.random() * colors.length)],
-      drift: (Math.random() - 0.5) * 0.5,
+      drift: (Math.random() - 0.5) * 0.5
     };
   }
 

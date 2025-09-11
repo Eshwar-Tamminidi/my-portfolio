@@ -225,10 +225,9 @@ body.dark-theme .npl3 {
   cursor: grab;
   padding-bottom: 8px;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  /* snap horizontally */
+  scroll-snap-type: x mandatory;  /* snap horizontally */
   -webkit-overflow-scrolling: touch;
-
+  
 }
 
 
@@ -251,8 +250,7 @@ body.dark-theme .npl3 {
   height: 220px;
   margin-right: 10px;
   border-radius: 8px;
-  scroll-snap-align: start;
-  /* snap each image to start */
+  scroll-snap-align: start; /* snap each image to start */
 }
 
 /* About */
@@ -749,7 +747,7 @@ body.dark-theme .dotted-line {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9;
 }
 
 body.dark-theme #snow-canvas {
@@ -760,40 +758,78 @@ body.dark-theme #snow-canvas {
 * {
   text-decoration: none;
 }
-
-body.dark-theme .navbar {
+body.dark-theme .navbar{
   width: 97%;
 }
-
+/* Navbar - Liquid Glass Look */
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 1000;
-
   left: 0;
   right: 0;
-  /* ✅ ensures it centers automatically */
   margin: 10px auto;
-  /* ✅ vertical spacing + center horizontally */
-  margin-left: 10px auto;
-  margin-right: 10px auto;
-
-  width: auto;
-  /* ✅ let content define width */
   max-width: calc(100% - 50px);
-  /* ✅ always leave 20px gap on both sides */
+  
+  background: rgba(255, 255, 255, 0.1); /* clearer glass */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.2); /* inner glow */
 
-  background: rgba(91, 156, 188, 0.8);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(50px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  padding: 10px 20px;
-  /* ✅ inside spacing */
-  text-align: center;
-  font-family: calibri;
+  padding: 15px 25px;
+  padding-left: 10px;
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
 }
+
+/* Add glossy shine animation */
+.navbar::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 80%
+  );
+  transform: rotate(25deg);
+  animation: shine 8s infinite linear;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(100%) rotate(25deg); }
+}
+
+
+body.dark-theme .navbar {
+  background: rgba(20, 20, 30, 0.4); /* subtle dark tint */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+  border: 1px solid rgba(72, 184, 242, 0.4); /* bluish border */
+  border-radius: 20px;
+
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.6),
+    inset 0 0 15px rgba(72, 184, 242, 0.15); /* inner glow */
+
+  font-family: calibri;
+  padding: 15px 25px;
+  padding-right: 10px;
+}
+
+
 
 
 .nav-right {
@@ -844,13 +880,7 @@ button {
   cursor: pointer;
 }
 
-/* Theming */
-body.dark-theme .navbar {
-  background: rgba(72, 184, 242, 0.8);
-  font-family: calibri;
-  padding-right: 15px;
-  padding-left: 15px;
-}
+
 
 body.dark-theme .navdiv {
   display: flex;
@@ -940,7 +970,6 @@ body.dark-theme .submit-button {
   color: #fdfdfd;
   width: 100%;
 }
-
 body.dark-theme .submit-button:hover {
   background-color: #06b1f4;
 }
@@ -957,32 +986,97 @@ body.dark-theme .submit-button:hover {
 
 /* Theme toggle button style */
 .theme-toggle {
-  background-color: rgb(253, 252, 252);
-  margin-left: 10px;
-  padding: 10px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   width: 45px;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: -18px;
-  font-size: 15px;
-  border: none;
+  height: 45px;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform .2s ease, box-shadow .2s ease;
+  z-index: 2;
+
+  /* ✅ no background here */
+  background: transparent; 
+  border: none;
+
+  color: #000; /* light theme icon/text color */
+  font-size: 18px;
+  font-weight: bold;
 }
 
+
+/* frosted background (separate from content) */
+.theme-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  z-index: -2; /* behind content */
+}
+
+/* shiny streak */
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -120%;
+  width: 340%;
+  height: 340%;
+  border-radius: 50%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.65) 0%,
+    rgba(255,255,255,0.12) 45%,
+    rgba(255,255,255,0.03) 60%,
+    transparent 72%
+  );
+  transform: rotate(25deg);
+  animation: toggle-shine 5.5s linear infinite alternate;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  z-index: -1; /* sits above glass, below content */
+}
+
+@keyframes toggle-shine {
+  0%   { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(100%) rotate(25deg); }
+}
+
+/* hover interaction */
 .theme-toggle:hover {
-  background-color: rgb(4, 4, 4);
+  transform: scale(1.08);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.2),
+              inset 0 0 12px rgba(255,255,255,0.1);
 }
 
-body.dark-theme .theme-toggle {
-  background-color: black;
+/* Dark mode glass */
+body.dark-theme .theme-toggle::after {
+  background: rgba(20, 20, 30, 0.55);
+  border: 1px solid rgba(72, 184, 242, 0.4);
 }
 
-body.dark-theme .theme-toggle:hover {
-  background-color: #ffffff;
+body.dark-theme .theme-toggle::before {
+  background: linear-gradient(
+    120deg,
+    rgba(72,184,242,0.45) 0%,
+    rgba(72,184,242,0.12) 45%,
+    rgba(72,184,242,0.02) 60%,
+    transparent 72%
+  );
 }
+
 
 /* Desktop defaults */
 
@@ -1027,52 +1121,44 @@ body.dark-theme .hamburger {
 
 /* Sidebar for mobile */
 @media (max-width: 768px) {
-
+  
   /* Adjust nav links for mobile sidebar */
   .nav-links {
-    background-color: rgba(81, 164, 202, 0.85);
-    /* 👈 bluish, strong opacity */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 35px;
+    background: rgba(41, 98, 155, 0.7); /* same as desktop */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 0 15px rgba(255, 255, 255, 0.15);
+
+    border-radius: 25px 0 0 25px;
     padding: 20px;
     margin: 20px auto;
-
     text-align: center;
-    /* Hidden by default */
+
     flex-direction: column;
-    right: 0;
+    right: -100%;
     position: fixed;
     top: 0;
-    right: -100%;
-    /* hidden initially */
-    width: 150px;
+    color: black;
+    width: 180px;
     height: 100vh;
-    border-radius: 20px 0 0 20px;
-
-
-    /* FIXED SPACING */
     justify-content: flex-start;
-    /* ✅ keep links at the top */
     align-items: flex-start;
-    /* ✅ align left inside sidebar */
-
     transition: right 0.35s ease-in-out;
     z-index: 1000;
     overflow-y: auto;
   }
+  
 
-  .theme-toggle {
-    margin-top: 0;
-    margin-left: 0;
-    margin-bottom: 20px;
-    margin-right: -55px;
-
-
+  /* Dark theme sidebar */
+  body.dark-theme .nav-links {
+    background: rgba(20, 20, 30, 0.9);
+    border: 1px solid rgba(72, 184, 242, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6),
+                inset 0 0 15px rgba(72, 184, 242, 0.15);
   }
-
+  
   .nav-links.active {
     display: flex;
     /* Show when hamburger is clicked */
@@ -1080,12 +1166,10 @@ body.dark-theme .hamburger {
     right: 0;
     /* slide in */
   }
-
-  .navbar {
+  .navbar{
     width: 90%;
   }
-
-  body.dark-theme .navbar {
+  body.dark-theme .navbar{
     width: 88%;
   }
 
@@ -1337,7 +1421,7 @@ body.menu-open {
 
 
 
-.Contact_Lable {
+.Contact_Lable{
   text-align: left;
 }
 
@@ -1353,13 +1437,28 @@ body.menu-open {
   left: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;
-  /* Don’t block clicks */
-  z-index: -1;
-  /* Behind everything */
+  pointer-events: none; /* Don’t block clicks */
+  z-index: -1; /* Behind everything */
 }
 
 body.dark-theme #bubble-canvas {
-  display: none;
-  /* Hide bubbles in dark theme */
+  display: none; /* Hide bubbles in dark theme */
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20px;
+    margin-right: -55px;
+
+    /* ✅ keep glass look on mobile */
+    background: transparent; 
+  }
 }
