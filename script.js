@@ -269,27 +269,25 @@ function initCertifications() {
   });
 
   // Touch
-  // --- Touch Events ---
+  // --- Mobile: true finger-follow scroll ---
 certWrap.addEventListener('touchstart', (e) => {
   if (e.touches.length !== 1) return;
   isDown = true;
   startX = e.touches[0].pageX - certWrap.offsetLeft;
   scrollLeft = certWrap.scrollLeft;
-}, {passive: true});
+});
 
 certWrap.addEventListener('touchend', () => {
   isDown = false;
-}, {passive: true});
+});
 
 certWrap.addEventListener('touchmove', (e) => {
   if (!isDown || e.touches.length !== 1) return;
-
+  e.preventDefault(); // ensures immediate scroll
   const x = e.touches[0].pageX - certWrap.offsetLeft;
-  const walk = (x - startX) * 1.5;
-
-  // Directly update scrollLeft without requestAnimationFrame
+  const walk = x - startX;
   certWrap.scrollLeft = scrollLeft - walk;
-}, {passive: true});
+});
 
 }
 
