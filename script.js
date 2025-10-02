@@ -269,34 +269,32 @@ function initCertifications() {
   });
 
   // Touch
-  certWrap.addEventListener(
-    "touchstart",
-    (e) => {
-      isDown = true;
-      startX = e.touches[0].pageX - certWrap.offsetLeft;
-      scrollLeft = certWrap.scrollLeft;
-    },
-    { passive: true }
-  );
+  let ticking = false;
 
-  certWrap.addEventListener(
-    "touchend",
-    () => {
-      isDown = false;
-    },
-    { passive: true }
-  );
+certWrap.addEventListener('touchstart', (e) => {
+  isDown = true;
+  startX = e.touches[0].pageX - certWrap.offsetLeft;
+  scrollLeft = certWrap.scrollLeft;
+}, {passive: true});
 
-  certWrap.addEventListener(
-    "touchmove",
-    (e) => {
-      if (!isDown) return;
-      const x = e.touches[0].pageX - certWrap.offsetLeft;
-      const walk = (x - startX) * 1.6;
+certWrap.addEventListener('touchend', () => {
+  isDown = false;
+}, {passive: true});
+
+certWrap.addEventListener('touchmove', (e) => {
+  if (!isDown) return;
+  const x = e.touches[0].pageX - certWrap.offsetLeft;
+  const walk = (x - startX) * 1.5;
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
       certWrap.scrollLeft = scrollLeft - walk;
-    },
-    { passive: true }
-  );
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, {passive: true});
+
 }
 
 /* ===== Theme Toggle ===== */
