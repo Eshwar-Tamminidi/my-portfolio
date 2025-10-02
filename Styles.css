@@ -1,6 +1,8 @@
-html {
+html, body {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* for iOS smooth momentum scroll */
 }
+
 
 /* Hide navbar when intro is active */
 body.intro-active .navbar {
@@ -382,44 +384,53 @@ body.dark-theme .npl3 {
 }
 
 /* Certifications — container + row (NO auto animation) */
+/* --- Smooth horizontal, momentum scrolling for cert strip --- */
 .Certifications {
   width: 100%;
-  overflow-x: auto;
-  /* allow manual scroll */
+  overflow-x: auto;        /* allow horizontal manual scroll */
   overflow-y: hidden;
   position: relative;
   cursor: grab;
   padding-bottom: 8px;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  /* snap horizontally */
+
+  /* mobile momentum + smooth behavior */
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 
+  /* disable forced snapping for continuous smooth scrolling */
+  scroll-snap-type: none;
+  touch-action: pan-y;     /* allow vertical page scroll by default */
+  display: flex;           /* make it a flex row so items flow naturally */
+  gap: 16px;               /* spacing between items */
+  align-items: center;
 }
 
-
-
-.Certifications:active {
-  cursor: grabbing;
-}
-
+/* keep the inner wrapper flexible but not forcing snaps */
 .Certfi {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   white-space: nowrap;
-  width: max-content;
-  /* natural width to enable horizontal scroll */
+  width: auto;             /* natural width */
   -webkit-user-select: none;
   user-select: none;
 }
 
+/* certificate images — behave as carousel items but do not snap */
 .Certfi img {
   height: 220px;
-  margin-right: 10px;
+  width: 300px;          /* 🔹 fixed width for each certificate */
+  flex: 0 0 auto;        /* prevents shrinking */
   border-radius: 8px;
-  scroll-snap-align: start;
-  /* snap each image to start */
+  object-fit: cover;     /* keeps aspect ratio without distortion */
+  margin-right: 10px;
+  scroll-snap-align: none; /* no snapping */
 }
+
+.Certifications.dragging {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+
 
 /* About */
 .About {
@@ -1194,54 +1205,45 @@ body.dark-theme .submit-button:hover {
   bottom: 0px;
 }
 
-/* frosted background (separate from content) */
+/* Glass background inside circle */
 .theme-toggle::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-
+  inset: 0;                 /* matches button size */
+  border-radius: 50%;       /* circle */
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.25);
-
   z-index: -2;
-  /* behind content */
 }
 
-/* shiny streak */
+/* Shine sweep effect */
 .theme-toggle::before {
   content: "";
   position: absolute;
-  top: -120%;
-  left: -120%;
-  width: 340%;
-  height: 340%;
-  border-radius: 50%;
-  background: linear-gradient(120deg,
-      rgba(255, 255, 255, 0.65) 0%,
-      rgba(255, 255, 255, 0.12) 45%,
-      rgba(255, 255, 255, 0.03) 60%,
-      transparent 72%);
-  transform: rotate(25deg);
-  animation: toggle-shine 5.5s linear infinite alternate;
+  top: 0;
+  left: -75%;              /* start left outside */
+  width: 250%;             /* just enough to sweep */
+  height: 100%;
+  border-radius: 50%;      /* keep it circular */
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 70%
+  );
+  animation: toggle-shine 4s linear infinite;
   pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.9;
   z-index: -1;
-  /* sits above glass, below content */
+  overflow: hidden;
 }
 
 @keyframes toggle-shine {
-  0% {
-    transform: translateX(-100%) rotate(25deg);
-  }
-
-  100% {
-    transform: translateX(100%) rotate(25deg);
-  }
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(100%); }
 }
+
 
 /* hover interaction */
 .theme-toggle:hover {

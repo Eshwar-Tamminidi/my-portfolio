@@ -778,3 +778,83 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔥 Initialize with dark theme by default
   setTheme(true);
 });
+
+
+
+
+
+
+
+
+
+
+// ---------- Smooth drag / swipe for the certifications strip ----------
+(function() {
+  const certContainer = document.querySelector('.Certifications');
+  if (!certContainer) return; // nothing to do if not present
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  // Mouse events (desktop)
+  certContainer.addEventListener('mousedown', (e) => {
+    isDown = true;
+    certContainer.classList.add('dragging');
+    startX = e.pageX - certContainer.offsetLeft;
+    scrollLeft = certContainer.scrollLeft;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDown) return;
+    isDown = false;
+    certContainer.classList.remove('dragging');
+  });
+
+  certContainer.addEventListener('mouseleave', () => {
+    if (!isDown) return;
+    isDown = false;
+    certContainer.classList.remove('dragging');
+  });
+
+  certContainer.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - certContainer.offsetLeft;
+    const walk = (x - startX) * 1.5; // increase or reduce factor to change speed
+    certContainer.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch events (mobile)
+  certContainer.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    isDown = true;
+    startX = e.touches[0].pageX - certContainer.offsetLeft;
+    scrollLeft = certContainer.scrollLeft;
+  }, {passive: true});
+
+  certContainer.addEventListener('touchend', () => {
+    isDown = false;
+  });
+
+  certContainer.addEventListener('touchmove', (e) => {
+    if (!isDown || e.touches.length !== 1) return;
+    // don't call preventDefault here to avoid blocking page scroll; we're only adjusting scrollLeft
+    const x = e.touches[0].pageX - certContainer.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    certContainer.scrollLeft = scrollLeft - walk;
+  }, {passive: true});
+
+  // Optional: add keyboard accessibility (arrow keys)
+  certContainer.setAttribute('tabindex', '0');
+  certContainer.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      certContainer.scrollBy({ left: 260, behavior: 'smooth' });
+    } else if (e.key === 'ArrowLeft') {
+      certContainer.scrollBy({ left: -260, behavior: 'smooth' });
+    }
+  });
+
+  // small visual feedback (optional in CSS)
+  // you may add .Certifications.dragging { cursor: grabbing; cursor: -webkit-grabbing; }
+})();
