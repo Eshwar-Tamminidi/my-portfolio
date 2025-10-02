@@ -269,9 +269,9 @@ function initCertifications() {
   });
 
   // Touch
-  let ticking = false;
-
+  // --- Touch Events ---
 certWrap.addEventListener('touchstart', (e) => {
+  if (e.touches.length !== 1) return;
   isDown = true;
   startX = e.touches[0].pageX - certWrap.offsetLeft;
   scrollLeft = certWrap.scrollLeft;
@@ -282,17 +282,13 @@ certWrap.addEventListener('touchend', () => {
 }, {passive: true});
 
 certWrap.addEventListener('touchmove', (e) => {
-  if (!isDown) return;
+  if (!isDown || e.touches.length !== 1) return;
+
   const x = e.touches[0].pageX - certWrap.offsetLeft;
   const walk = (x - startX) * 1.5;
 
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      certWrap.scrollLeft = scrollLeft - walk;
-      ticking = false;
-    });
-    ticking = true;
-  }
+  // Directly update scrollLeft without requestAnimationFrame
+  certWrap.scrollLeft = scrollLeft - walk;
 }, {passive: true});
 
 }
