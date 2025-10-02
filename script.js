@@ -1,5 +1,30 @@
-// Ensure the hamburger menu logic runs first on DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function () {
+// ================== On DOM Ready ==================
+document.addEventListener("DOMContentLoaded", () => {
+  initHamburgerMenu();
+  initSliders();
+  initSliders2();
+  initSliding();
+  initProjects();
+  initGenie();
+  initCommunication();
+  initFadeInLeft();
+  initSkills();
+  initEducation();
+  initCertifications();
+  initNavHighlight();
+  initnavItems();
+  initIntro();
+  initIntroExp();
+  initContact();
+  initTheme0();
+  initThemeBtn();
+  initExplore();
+  initNavbar();
+  initExpp();
+});
+
+// ================== Hamburger Menu ==================
+function initHamburgerMenu() {
   const hamburger = document.getElementById("hamburger");
   const navLinks = document.getElementById("navLinks");
 
@@ -45,10 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}
 
+// ================== Sliders ==================
 /* ===== Rolling logos ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initSliders() {
   const slider = document.querySelector(".Slide");
   const sliderContainer = document.querySelector(".Logo");
 
@@ -78,9 +104,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   duplicateImages();
   slideImages();
-});
+}
 
-document.addEventListener("DOMContentLoaded", function () {
+function initSliders2() {
   const slider = document.querySelector(".Slide2");
   const sliderContainer = document.querySelector(".Left");
   if (!slider || !sliderContainer) return;
@@ -100,28 +126,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   duplicateImages();
   startScrolling();
-});
+}
 
 /* Resume animation for Slides on load */
-document.addEventListener("DOMContentLoaded", function () {
+function initSliding() {
   let animatedElements = document.querySelectorAll(".Slide, .Slide2, .Slide3");
   animatedElements.forEach((el) => {
     el.style.animationPlayState = "running";
   });
-});
+}
 
 /* ===== Project expand/collapse ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initProjects() {
   let projects = document.querySelectorAll(".project-container");
   projects.forEach((project) => {
     project.addEventListener("click", function () {
       this.classList.toggle("active");
     });
   });
-});
+}
 
 /* ===== Genie show on scroll ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initGenie() {
   let genieElements = document.querySelectorAll(".genie-box");
   function showOnScroll(entries, observer) {
     entries.forEach((entry) => {
@@ -136,10 +162,10 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     genieElements.forEach((el) => el.classList.add("show"));
   }, 500);
-});
+}
 
 /* ===== Communication reveal ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initCommunication() {
   let communicationSection = document.querySelector(".communication-envelope");
   if (!communicationSection) return;
 
@@ -153,10 +179,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
   observer.observe(communicationSection);
-});
+}
 
 /* ===== Fade-in left elements ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initFadeInLeft() {
   let elements = document.querySelectorAll(".fade-in-left");
   function revealOnScroll(entries, observer) {
     entries.forEach((entry) => {
@@ -168,10 +194,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
   elements.forEach((element) => observer.observe(element));
-});
+}
 
 /* ===== Skills reveal ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initSkills() {
   let skillsSection = document.querySelector(".skills-envelope");
   if (!skillsSection) return;
 
@@ -185,10 +211,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
   observer.observe(skillsSection);
-});
+}
 
 /* ===== Education reveal after genie ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initEducation() {
   const genieBox = document.querySelector(".genie-box");
   const educationSection = document.querySelector(".education-container");
   if (!genieBox || !educationSection) return;
@@ -208,10 +234,10 @@ document.addEventListener("DOMContentLoaded", function () {
       revealEducation();
     }, 0);
   }, 1000);
-});
+}
 
 /* ===== Certificates: manual drag / swipe (NO auto scroll) ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initCertifications() {
   const certWrap = document.querySelector(".Certifications");
   if (!certWrap) return;
 
@@ -271,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { passive: true }
   );
-});
+}
 
 /* ===== Theme Toggle ===== */
 
@@ -337,7 +363,7 @@ function initSnowEffect() {
 window.addEventListener("load", initSnowEffect);
 
 /* ===== Contact Form (safe attach) ===== */
-document.addEventListener("DOMContentLoaded", function () {
+function initContact() {
   const form = document.getElementById("contactForm");
   const formMessage = document.getElementById("formMessage");
   if (!form) return;
@@ -371,12 +397,13 @@ document.addEventListener("DOMContentLoaded", function () {
       formMessage.style.color = "red";
     }
   });
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function initNavHighlight() {
   const sections = document.querySelectorAll(
-    "#home2, .About, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
+    "#home2, #about, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
   );
+
   const navLinks = document.querySelectorAll(".nav-links li a");
   const highlight = document.getElementById("navHighlight");
 
@@ -384,7 +411,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let current = "";
     sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
-      if (rect.top <= 150 && rect.bottom >= 150) {
+      if (rect.top <= 50 && rect.bottom > 50) {
+        // smaller threshold for mobile
         current = "#" + sec.id;
       }
     });
@@ -432,9 +460,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", updateIndicator);
   window.addEventListener("resize", updateIndicator);
   updateIndicator();
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function initnavItems() {
   const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
 
   headings.forEach((heading) => {
@@ -444,7 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
       line.style.width = heading.offsetWidth + "px";
     }
   });
-});
+}
 
 // ------------------ Bubble Background (Light Theme) ------------------
 const bubbleCanvas = document.getElementById("bubble-canvas");
@@ -503,7 +531,7 @@ if (bubbleCanvas) {
   updateBubbles();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function initIntro() {
   const intro = document.getElementById("intro");
   document.body.classList.add("intro-active"); // intro mode ON
 
@@ -525,9 +553,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Trigger intro close on scroll or swipe
   window.addEventListener("wheel", onScroll, { passive: true });
   window.addEventListener("touchmove", onScroll, { passive: true });
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function initIntroExp() {
   const intro = document.getElementById("intro");
   const exploreBtn = document.getElementById("exploreBtn");
 
@@ -584,9 +612,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (exploreBtn) {
     exploreBtn.addEventListener("click", closeIntro);
   }
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function initExplore() {
   const intro = document.getElementById("intro");
   const exploreBtn = document.getElementById("exploreBtn");
 
@@ -663,7 +691,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Tech Explorer 🌌",
   ];
   if (introTyping) startTyping(introTyping, introWords);
-});
+}
 
 // Parallax hover on intro
 document.addEventListener("mousemove", (e) => {
@@ -679,7 +707,7 @@ document.addEventListener("mousemove", (e) => {
 });
 
 // Explore button → close intro and scroll to home
-document.addEventListener("DOMContentLoaded", () => {
+function initExpp() {
   const exploreBtn = document.getElementById("exploreBtn");
   const intro = document.getElementById("intro");
 
@@ -694,10 +722,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000); // match your intro transition duration
     });
   }
-});
+}
 
 // Dynamically set scroll-padding-top based on navbar height
-document.addEventListener("DOMContentLoaded", () => {
+function initNavbar() {
   const navbar = document.querySelector(".navbar");
   if (!navbar) return;
 
@@ -708,62 +736,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateScrollPadding();
   window.addEventListener("resize", updateScrollPadding);
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const themeBtnIntro = document.getElementById("themeBtn"); // intro button
-  const body = document.body;
-
-  // Initialize theme from localStorage
-  if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark-theme");
-    initSnowEffect();
-  } else {
-    body.classList.remove("dark-theme");
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle("dark-theme");
-    const isDark = document.body.classList.contains("dark-theme");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-
-    // Snow effect
-    if (isDark) initSnowEffect();
-    else {
-      const canvas = document.getElementById("snow-canvas");
-      if (canvas)
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }
-
-  // Attach to both buttons
-  document.getElementById("themeBtn")?.addEventListener("click", toggleTheme); // intro
-  document
-    .getElementById("theme-toggle")
-    ?.addEventListener("click", toggleTheme); // main
-
-  // Attach toggle to intro button
-  if (themeBtnIntro) {
-    themeBtnIntro.addEventListener("click", toggleTheme);
-  }
-
-  // Attach toggle to main theme button (optional)
-  const mainThemeBtn = document.getElementById("theme-toggle");
-  if (mainThemeBtn) {
-    mainThemeBtn.addEventListener("click", toggleTheme);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
+function initTheme0() {
   const themeToggles = document.querySelectorAll(".theme-toggle");
 
   function setTheme(isDark) {
     if (isDark) {
       document.body.classList.add("dark-theme");
       themeToggles.forEach((btn) => (btn.textContent = "☀️"));
+      localStorage.setItem("theme", "dark");
     } else {
       document.body.classList.remove("dark-theme");
       themeToggles.forEach((btn) => (btn.textContent = "🌙"));
+      localStorage.setItem("theme", "light");
     }
   }
 
@@ -775,22 +761,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Attach event to both buttons
   themeToggles.forEach((btn) => btn.addEventListener("click", toggleTheme));
 
-  // 🔥 Initialize with dark theme by default
-  setTheme(true);
-});
-
-
-
-
-
-
-
-
-
+  // 🔥 Initialize with saved theme (default: dark)
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    setTheme(false);
+  } else {
+    setTheme(true);
+  }
+}
 
 // ---------- Smooth drag / swipe for the certifications strip ----------
-(function() {
-  const certContainer = document.querySelector('.Certifications');
+(function () {
+  const certContainer = document.querySelector(".Certifications");
   if (!certContainer) return; // nothing to do if not present
 
   let isDown = false;
@@ -798,26 +780,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let scrollLeft = 0;
 
   // Mouse events (desktop)
-  certContainer.addEventListener('mousedown', (e) => {
+  certContainer.addEventListener("mousedown", (e) => {
     isDown = true;
-    certContainer.classList.add('dragging');
+    certContainer.classList.add("dragging");
     startX = e.pageX - certContainer.offsetLeft;
     scrollLeft = certContainer.scrollLeft;
   });
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener("mouseup", () => {
     if (!isDown) return;
     isDown = false;
-    certContainer.classList.remove('dragging');
+    certContainer.classList.remove("dragging");
   });
 
-  certContainer.addEventListener('mouseleave', () => {
+  certContainer.addEventListener("mouseleave", () => {
     if (!isDown) return;
     isDown = false;
-    certContainer.classList.remove('dragging');
+    certContainer.classList.remove("dragging");
   });
 
-  certContainer.addEventListener('mousemove', (e) => {
+  certContainer.addEventListener("mousemove", (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - certContainer.offsetLeft;
@@ -826,32 +808,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Touch events (mobile)
-  certContainer.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    isDown = true;
-    startX = e.touches[0].pageX - certContainer.offsetLeft;
-    scrollLeft = certContainer.scrollLeft;
-  }, {passive: true});
+  certContainer.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches.length !== 1) return;
+      isDown = true;
+      startX = e.touches[0].pageX - certContainer.offsetLeft;
+      scrollLeft = certContainer.scrollLeft;
+    },
+    { passive: true }
+  );
 
-  certContainer.addEventListener('touchend', () => {
+  certContainer.addEventListener("touchend", () => {
     isDown = false;
   });
 
-  certContainer.addEventListener('touchmove', (e) => {
-    if (!isDown || e.touches.length !== 1) return;
-    // don't call preventDefault here to avoid blocking page scroll; we're only adjusting scrollLeft
-    const x = e.touches[0].pageX - certContainer.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    certContainer.scrollLeft = scrollLeft - walk;
-  }, {passive: true});
+  certContainer.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDown || e.touches.length !== 1) return;
+      // don't call preventDefault here to avoid blocking page scroll; we're only adjusting scrollLeft
+      const x = e.touches[0].pageX - certContainer.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      certContainer.scrollLeft = scrollLeft - walk;
+    },
+    { passive: true }
+  );
 
   // Optional: add keyboard accessibility (arrow keys)
-  certContainer.setAttribute('tabindex', '0');
-  certContainer.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
-      certContainer.scrollBy({ left: 260, behavior: 'smooth' });
-    } else if (e.key === 'ArrowLeft') {
-      certContainer.scrollBy({ left: -260, behavior: 'smooth' });
+  certContainer.setAttribute("tabindex", "0");
+  certContainer.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      certContainer.scrollBy({ left: 260, behavior: "smooth" });
+    } else if (e.key === "ArrowLeft") {
+      certContainer.scrollBy({ left: -260, behavior: "smooth" });
     }
   });
 
