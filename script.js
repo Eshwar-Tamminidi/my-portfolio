@@ -13,14 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initCertifications();
   initNavHighlight();
   initnavItems();
-  initIntro();
-  initIntroExp();
-  initContact();
-  initTheme0();
-  initThemeBtn();
-  initExplore();
+  initBubbles(); // Initialize light theme bubbles
   initNavbar();
-  initExpp();
+  initThemeBtn(); // Handles both toggles and saves state
+  initSmoothScroll(); // NEW: Handles smooth scrolling
+  initIntroSequence(); // NEW: Handles all intro logic
+  initContact(); // Initialize contact form
 });
 
 // ================== Hamburger Menu ==================
@@ -44,6 +42,7 @@ function initHamburgerMenu() {
     // Close menu when any nav link is clicked
     document.querySelectorAll("#navLinks a").forEach((link) => {
       link.addEventListener("click", () => {
+        // The smooth scroll function will handle the navigation
         navLinks.classList.remove("active");
         document.body.classList.remove("menu-open");
         hamburger.setAttribute("aria-expanded", "false");
@@ -72,15 +71,69 @@ function initHamburgerMenu() {
   }
 }
 
-// ================== Sliders ==================
-/* ===== Rolling logos ===== */
+// ================== SLOW SCROLL FIX ==================
+function initSmoothScroll() {
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navbar = document.querySelector('.navbar');
+  const scrollDuration = 800; // Duration in ms (0.8 seconds)
+
+  // Easing function (ease-in-out-cubic)
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Stop default anchor behavior
+      
+      const targetId = this.getAttribute('href');
+      // Handle the "Explore" button which might also be a link
+      if (targetId === "#home2" && document.body.classList.contains("intro-active")) {
+          // If it's the explore button, let the intro sequence handle it
+          return;
+      }
+      
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        // Calculate target position, offset by navbar height + 10px padding
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - (navbarHeight + 10);
+        
+        const startPosition = window.scrollY;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+
+        // Animation loop
+        function scrollAnimation(currentTime) {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / scrollDuration, 1);
+          const ease = easeInOutCubic(progress);
+
+          window.scrollTo(0, startPosition + distance * ease);
+
+          if (timeElapsed < scrollDuration) {
+            requestAnimationFrame(scrollAnimation);
+          }
+        }
+        
+        requestAnimationFrame(scrollAnimation);
+      }
+    });
+  });
+}
+// ================== END SCROLL FIX ==================
+
+
+// ================== Sliders (Rolling logos) ==================
 function initSliders() {
   const slider = document.querySelector(".Slide");
   const sliderContainer = document.querySelector(".Logo");
 
   if (!slider || !sliderContainer) return;
 
-  let scrollSpeed = 2; //higher value faster scrolling
+  let scrollSpeed = 2; 
   let scrollAmount = 0;
 
   function duplicateImages() {
@@ -96,7 +149,7 @@ function initSliders() {
   function slideImages() {
     scrollAmount -= scrollSpeed;
     if (Math.abs(scrollAmount) >= slider.scrollWidth / 2) {
-      scrollAmount = 0; // Reset position when halfway through
+      scrollAmount = 0; 
     }
     slider.style.transform = `translateX(${scrollAmount}px)`;
     requestAnimationFrame(slideImages);
@@ -122,13 +175,12 @@ function initSliders2() {
   }
   function startScrolling() {
     slider.style.animation = `scrollRight 10s linear infinite`;
-    slider.style.animationPlayState = "running"; // resume animation
+    slider.style.animationPlayState = "running"; 
   }
   duplicateImages();
   startScrolling();
 }
 
-/* Resume animation for Slides on load */
 function initSliding() {
   let animatedElements = document.querySelectorAll(".Slide, .Slide2, .Slide3");
   animatedElements.forEach((el) => {
@@ -146,7 +198,7 @@ function initProjects() {
   });
 }
 
-/* ===== Genie show on scroll ===== */
+/* ===== Genie show on scroll (Genie Box) ===== */
 function initGenie() {
   let genieElements = document.querySelectorAll(".genie-box");
   function showOnScroll(entries, observer) {
@@ -181,10 +233,10 @@ function initCommunication() {
   observer.observe(communicationSection);
 }
 
-/* ===== Fade-in left elements ===== */
+/* ===== Fade-in left elements (About) ===== */
 function initFadeInLeft() {
   let elements = document.querySelectorAll(".fade-in-left");
-  function revealOnScroll(entries, observer) {
+  function showOnScroll(entries, observer) {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
@@ -192,7 +244,7 @@ function initFadeInLeft() {
       }
     });
   }
-  let observer = new IntersectionObserver(revealOnScroll, { threshold: 0.3 });
+  let observer = new IntersectionObserver(showOnScroll, { threshold: 0.3 });
   elements.forEach((element) => observer.observe(element));
 }
 
@@ -252,11 +304,11 @@ function initCertifications() {
     startX = e.pageX - certWrap.offsetLeft;
     scrollLeft = certWrap.scrollLeft;
   });
-  certWrap.addEventListener("mouseleave", () => {
+  document.addEventListener("mouseup", () => {
     isDown = false;
     certWrap.classList.remove("dragging");
   });
-  certWrap.addEventListener("mouseup", () => {
+  certWrap.addEventListener("mouseleave", () => {
     isDown = false;
     certWrap.classList.remove("dragging");
   });
@@ -269,34 +321,45 @@ function initCertifications() {
   });
 
   // Touch
-  // --- Mobile: true finger-follow scroll ---
-certWrap.addEventListener('touchstart', (e) => {
-  if (e.touches.length !== 1) return;
-  isDown = true;
-  startX = e.touches[0].pageX - certWrap.offsetLeft;
-  scrollLeft = certWrap.scrollLeft;
-});
+  certWrap.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches.length !== 1) return;
+      isDown = true;
+      startX = e.touches[0].pageX - certWrap.offsetLeft;
+      scrollLeft = certWrap.scrollLeft;
+    },
+    { passive: true }
+  );
 
-certWrap.addEventListener('touchend', () => {
-  isDown = false;
-});
+  certWrap.addEventListener("touchend", () => {
+    isDown = false;
+  });
 
-certWrap.addEventListener('touchmove', (e) => {
-  if (!isDown || e.touches.length !== 1) return;
-  e.preventDefault(); // ensures immediate scroll
-  const x = e.touches[0].pageX - certWrap.offsetLeft;
-  const walk = x - startX;
-  certWrap.scrollLeft = scrollLeft - walk;
-});
-
+  certWrap.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDown || e.touches.length !== 1) return;
+      const x = e.touches[0].pageX - certWrap.offsetLeft;
+      const walk = x - startX;
+      certWrap.scrollLeft = scrollLeft - walk;
+    },
+    { passive: true }
+  );
 }
-
-/* ===== Theme Toggle ===== */
 
 /* ===== Snow Effect (dark mode only) ===== */
 function initSnowEffect() {
   const canvas = document.getElementById("snow-canvas");
-  if (!canvas || !document.body.classList.contains("dark-theme")) return;
+  // Check if canvas exists AND we are in dark theme
+  if (!canvas || !document.body.classList.contains("dark-theme")) {
+    // If we're not in dark theme, make sure to clear any old snow
+    if(canvas) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    return;
+  }
 
   const ctx = canvas.getContext("2d");
   let width = (canvas.width = window.innerWidth);
@@ -339,6 +402,11 @@ function initSnowEffect() {
   }
 
   function updateSnowfall() {
+    // Only run animation if dark theme is still active
+    if (!document.body.classList.contains("dark-theme")) {
+       ctx.clearRect(0, 0, width, height);
+       return;
+    }
     drawSnowflakes();
     moveSnowflakes();
     requestAnimationFrame(updateSnowfall);
@@ -352,7 +420,6 @@ function initSnowEffect() {
   createSnowflakes();
   updateSnowfall();
 }
-window.addEventListener("load", initSnowEffect);
 
 /* ===== Contact Form (safe attach) ===== */
 function initContact() {
@@ -391,6 +458,7 @@ function initContact() {
   });
 }
 
+/* ===== Nav Highlight Indicator ===== */
 function initNavHighlight() {
   const sections = document.querySelectorAll(
     "#home2, #about, #education2, #skills, #projects, #certifications2, #communication, #resume, #contact"
@@ -404,7 +472,6 @@ function initNavHighlight() {
     sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
       if (rect.top <= 50 && rect.bottom > 50) {
-        // smaller threshold for mobile
         current = "#" + sec.id;
       }
     });
@@ -421,7 +488,9 @@ function initNavHighlight() {
     let current = "";
     sections.forEach((sec) => {
       const rect = sec.getBoundingClientRect();
-      if (rect.top <= 150 && rect.bottom >= 150) {
+      // Use a larger threshold to catch the section earlier
+      const navHeight = document.querySelector('.navbar')?.offsetHeight || 70;
+      if (rect.top <= (navHeight + 50) && rect.bottom >= (navHeight + 50)) {
         current = "#" + sec.id;
       }
     });
@@ -454,6 +523,7 @@ function initNavHighlight() {
   updateIndicator();
 }
 
+/* ===== Heading Line Width (adjusts line size based on heading text width) ===== */
 function initnavItems() {
   const headings = document.querySelectorAll(".npl, .npl2, .npl3,.edu-title");
 
@@ -467,8 +537,17 @@ function initnavItems() {
 }
 
 // ------------------ Bubble Background (Light Theme) ------------------
-const bubbleCanvas = document.getElementById("bubble-canvas");
-if (bubbleCanvas) {
+function initBubbles() {
+  const bubbleCanvas = document.getElementById("bubble-canvas");
+  // Stop if canvas doesn't exist or if we're in dark mode
+  if (!bubbleCanvas || document.body.classList.contains("dark-theme")) {
+     if(bubbleCanvas) {
+        const ctx = bubbleCanvas.getContext("2d");
+        ctx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height);
+     }
+    return;
+  }
+  
   const bubbleCtx = bubbleCanvas.getContext("2d");
 
   let bubbles = [];
@@ -498,6 +577,12 @@ if (bubbleCanvas) {
   }
 
   function updateBubbles() {
+    // Stop animation if we switch to dark theme
+    if (document.body.classList.contains("dark-theme")) {
+       bubbleCtx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height);
+       return;
+    }
+    
     bubbleCtx.clearRect(0, 0, bubbleCanvas.width, bubbleCanvas.height);
     if (bubbles.length < maxBubbles) {
       bubbles.push(createBubble());
@@ -523,134 +608,54 @@ if (bubbleCanvas) {
   updateBubbles();
 }
 
-function initIntro() {
-  const intro = document.getElementById("intro");
-  document.body.classList.add("intro-active"); // intro mode ON
-
-  function closeIntro() {
-    intro.classList.add("hidden"); // slide up
-    setTimeout(() => {
-      document.body.classList.remove("intro-active"); // unlock site
-    }, 1000); // match transition duration
-    window.removeEventListener("wheel", onScroll);
-    window.removeEventListener("touchmove", onScroll);
-  }
-
-  function onScroll() {
-    if (!intro.classList.contains("hidden")) {
-      closeIntro();
-    }
-  }
-
-  // Trigger intro close on scroll or swipe
-  window.addEventListener("wheel", onScroll, { passive: true });
-  window.addEventListener("touchmove", onScroll, { passive: true });
-}
-
-function initIntroExp() {
+/* ===== NEW INTRO SEQUENCE LOGIC ===== */
+function initIntroSequence() {
   const intro = document.getElementById("intro");
   const exploreBtn = document.getElementById("exploreBtn");
 
   if (!intro) return;
 
-  // Lock scroll while intro is visible
-  document.body.style.overflow = "hidden";
+  let isIntroClosing = false; // Gate to prevent multiple triggers
+  document.body.style.overflow = "hidden"; // Lock scroll on main page
   document.body.classList.add("intro-active");
 
-  let introClosed = false;
-
-  function unlockScroll() {
-    document.body.style.overflow = "";
-    document.body.classList.remove("intro-active");
-  }
-
+  // === The Master Close Function ===
   function closeIntro() {
-    if (introClosed) return; // Prevent double triggers
-    introClosed = true;
+    if (isIntroClosing) return; // Prevent running twice
+    isIntroClosing = true;
 
-    intro.classList.add("hidden"); // slide up
-    setTimeout(unlockScroll, 1000); // match CSS transition
+    // 1. Add 'hidden' to start animation
+    intro.classList.add("hidden"); 
 
-    // Remove listeners
-    window.removeEventListener("wheel", onScrollUnlock);
-    window.removeEventListener("touchstart", onTouchStart);
-    window.removeEventListener("touchmove", onTouchMove);
-  }
-
-  // --- Touch swipe detection ---
-  let startY = 0;
-  function onTouchStart(e) {
-    startY = e.touches[0].clientY;
-  }
-
-  function onTouchMove(e) {
-    const diffY = startY - e.touches[0].clientY;
-    if (diffY > 50) {
-      // swipe up threshold
-      closeIntro();
-    }
-  }
-
-  // Scroll / wheel
-  function onScrollUnlock() {
-    closeIntro();
-  }
-
-  window.addEventListener("wheel", onScrollUnlock, { passive: true });
-  window.addEventListener("touchstart", onTouchStart, { passive: true });
-  window.addEventListener("touchmove", onTouchMove, { passive: true });
-
-  // Explore button
-  if (exploreBtn) {
-    exploreBtn.addEventListener("click", closeIntro);
-  }
-}
-
-function initExplore() {
-  const intro = document.getElementById("intro");
-  const exploreBtn = document.getElementById("exploreBtn");
-
-  if (!intro) return;
-
-  // Lock scroll
-  document.body.style.overflow = "hidden"; // prevent main page scroll
-
-  function closeIntro() {
-    if (!intro.classList.contains("hidden")) {
-      intro.classList.add("hidden");
-      document.body.classList.remove("intro-active");
-      document.body.style.overflow = ""; // unlock scroll
-
-      // Start main page typing (if needed)
-      const mainTyping = document.querySelector(".typing-text-main");
-      const mainWords = ["a Developer", "an Innovator", "a Coder"];
-      if (mainTyping) startTyping(mainTyping, mainWords);
-    }
-  }
-
-  function onScroll() {
-    closeIntro();
+    // 2. Instantly scroll main page to top (hidden behind intro)
+    window.scrollTo(0, 0); 
+    
+    // 3. Remove listeners to stop re-triggering
     window.removeEventListener("wheel", onScroll);
     window.removeEventListener("touchmove", onScroll);
+    if (exploreBtn) exploreBtn.removeEventListener("click", closeIntro);
+
+    // 4. After animation (1s), unlock scrolling
+    setTimeout(() => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("intro-active");
+    }, 1000); // Must match CSS transition duration
+  }
+
+  // === Triggers ===
+  function onScroll() {
+    closeIntro();
   }
 
   window.addEventListener("wheel", onScroll, { passive: true });
   window.addEventListener("touchmove", onScroll, { passive: true });
-
   if (exploreBtn) exploreBtn.addEventListener("click", closeIntro);
 
-  // Typing effect function
-  function startTyping(
-    container,
-    words,
-    typingSpeed = 120,
-    deletingSpeed = 60,
-    pauseDelay = 1200
-  ) {
-    let wordIndex = 0,
-      charIndex = 0,
-      isDeleting = false;
+  // === Typing Effect ===
+  function startTyping(container, words, typingSpeed = 120, deletingSpeed = 60, pauseDelay = 1200) {
+    let wordIndex = 0, charIndex = 0, isDeleting = false;
     function typeLoop() {
+      if (isIntroClosing) return; // Stop typing if intro is closing
       const currentWord = words[wordIndex];
       if (isDeleting) {
         charIndex--;
@@ -668,13 +673,11 @@ function initExplore() {
         isDeleting = false;
         wordIndex = (wordIndex + 1) % words.length;
       }
-
       setTimeout(typeLoop, isDeleting ? deletingSpeed : typingSpeed);
     }
     typeLoop();
   }
 
-  // Start intro typing
   const introTyping = intro.querySelector(".typing-text");
   const introWords = [
     "Aspiring Software Engineer 🚀",
@@ -683,38 +686,29 @@ function initExplore() {
     "Tech Explorer 🌌",
   ];
   if (introTyping) startTyping(introTyping, introWords);
+  
+  // === Parallax (from old code, good to keep) ===
+  document.addEventListener("mousemove", (e) => {
+    if (!intro || intro.classList.contains("hidden")) return;
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+    const introContent = intro.querySelector(".intro-content");
+    if (introContent) {
+        introContent.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
 }
+/* ===== END INTRO LOGIC ===== */
 
-// Parallax hover on intro
-document.addEventListener("mousemove", (e) => {
-  const intro = document.getElementById("intro");
-  if (!intro || intro.classList.contains("hidden")) return;
+// This function is now redundant, but we keep its definition
+// to prevent errors from the old `DOMContentLoaded` call.
+// The new `initIntroSequence` handles all its logic.
+function initExplore() {}
+function initExpp() {}
+function initIntro() {}
+function initIntroExp() {}
+function initTheme0() {}
 
-  const x = (e.clientX / window.innerWidth - 0.5) * 10;
-  const y = (e.clientY / window.innerHeight - 0.5) * 10;
-
-  intro.querySelector(
-    ".intro-content"
-  ).style.transform = `translate(${x}px, ${y}px)`;
-});
-
-// Explore button → close intro and scroll to home
-function initExpp() {
-  const exploreBtn = document.getElementById("exploreBtn");
-  const intro = document.getElementById("intro");
-
-  if (exploreBtn && intro) {
-    exploreBtn.addEventListener("click", () => {
-      intro.classList.add("hidden"); // slide intro up
-      setTimeout(() => {
-        document.body.classList.remove("intro-active"); // unlock site
-        document.getElementById("home2").scrollIntoView({
-          behavior: "smooth", // ✅ smooth scroll
-        });
-      }, 1000); // match your intro transition duration
-    });
-  }
-}
 
 // Dynamically set scroll-padding-top based on navbar height
 function initNavbar() {
@@ -723,14 +717,16 @@ function initNavbar() {
 
   function updateScrollPadding() {
     const navHeight = navbar.offsetHeight;
-    document.documentElement.style.scrollPaddingTop = navHeight + "px";
+    // We set scrollPaddingTop for CSS-based scrolling (like user scrolling)
+    document.documentElement.style.scrollPaddingTop = (navHeight + 10) + "px";
   }
 
   updateScrollPadding();
   window.addEventListener("resize", updateScrollPadding);
 }
 
-function initTheme0() {
+// Global Theme Toggle Functionality
+function initThemeBtn() {
   const themeToggles = document.querySelectorAll(".theme-toggle");
 
   function setTheme(isDark) {
@@ -738,10 +734,14 @@ function initTheme0() {
       document.body.classList.add("dark-theme");
       themeToggles.forEach((btn) => (btn.textContent = "☀️"));
       localStorage.setItem("theme", "dark");
+      initSnowEffect(); // Start snow
+      initBubbles(); // Stop bubbles (function checks dark theme)
     } else {
       document.body.classList.remove("dark-theme");
       themeToggles.forEach((btn) => (btn.textContent = "🌙"));
       localStorage.setItem("theme", "light");
+      initSnowEffect(); // Stop snow
+      initBubbles(); // Start bubbles
     }
   }
 
@@ -750,93 +750,14 @@ function initTheme0() {
     setTheme(isDark);
   }
 
-  // Attach event to both buttons
-  themeToggles.forEach((btn) => btn.addEventListener("click", toggleTheme));
-
-  // 🔥 Initialize with saved theme (default: dark)
+  // Initialize theme from localStorage
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "light") {
     setTheme(false);
   } else {
-    setTheme(true);
+    setTheme(true); // Default to dark theme
   }
+
+  // Attach event to all buttons
+  themeToggles.forEach((btn) => btn.addEventListener("click", toggleTheme));
 }
-
-// ---------- Smooth drag / swipe for the certifications strip ----------
-(function () {
-  const certContainer = document.querySelector(".Certifications");
-  if (!certContainer) return; // nothing to do if not present
-
-  let isDown = false;
-  let startX = 0;
-  let scrollLeft = 0;
-
-  // Mouse events (desktop)
-  certContainer.addEventListener("mousedown", (e) => {
-    isDown = true;
-    certContainer.classList.add("dragging");
-    startX = e.pageX - certContainer.offsetLeft;
-    scrollLeft = certContainer.scrollLeft;
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (!isDown) return;
-    isDown = false;
-    certContainer.classList.remove("dragging");
-  });
-
-  certContainer.addEventListener("mouseleave", () => {
-    if (!isDown) return;
-    isDown = false;
-    certContainer.classList.remove("dragging");
-  });
-
-  certContainer.addEventListener("mousemove", (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - certContainer.offsetLeft;
-    const walk = (x - startX) * 1.5; // increase or reduce factor to change speed
-    certContainer.scrollLeft = scrollLeft - walk;
-  });
-
-  // Touch events (mobile)
-  certContainer.addEventListener(
-    "touchstart",
-    (e) => {
-      if (e.touches.length !== 1) return;
-      isDown = true;
-      startX = e.touches[0].pageX - certContainer.offsetLeft;
-      scrollLeft = certContainer.scrollLeft;
-    },
-    { passive: true }
-  );
-
-  certContainer.addEventListener("touchend", () => {
-    isDown = false;
-  });
-
-  certContainer.addEventListener(
-    "touchmove",
-    (e) => {
-      if (!isDown || e.touches.length !== 1) return;
-      // don't call preventDefault here to avoid blocking page scroll; we're only adjusting scrollLeft
-      const x = e.touches[0].pageX - certContainer.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      certContainer.scrollLeft = scrollLeft - walk;
-    },
-    { passive: true }
-  );
-
-  // Optional: add keyboard accessibility (arrow keys)
-  certContainer.setAttribute("tabindex", "0");
-  certContainer.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") {
-      certContainer.scrollBy({ left: 260, behavior: "smooth" });
-    } else if (e.key === "ArrowLeft") {
-      certContainer.scrollBy({ left: -260, behavior: "smooth" });
-    }
-  });
-
-  // small visual feedback (optional in CSS)
-  // you may add .Certifications.dragging { cursor: grabbing; cursor: -webkit-grabbing; }
-})();
